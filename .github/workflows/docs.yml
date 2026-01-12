@@ -4,12 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       version:
+        description: >
+          The version string set for the documentation.
         required: true
         type: string
       alias:
+        description: >
+          An alias for the chosen version, such as 'stable'.
         required: false
         type: string
-        default: "latest"
+        default: ""
   workflow_call:
     inputs:
       version:
@@ -18,7 +22,7 @@ on:
       alias:
         required: false
         type: string
-        default: "latest"
+        default: ""
 
 jobs:
   documentation:
@@ -50,5 +54,10 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Build documentation
+      - name: Build documentation with alias
+        if: inputs.alias != ''
         run: hatch run docs:deploy -- --push ${{ inputs.version }} ${{ inputs.alias }}
+
+      - name: Build documentation without alias
+        if: inputs.alias == ''
+        run: hatch run docs:deploy -- --push ${{ inputs.version }}
