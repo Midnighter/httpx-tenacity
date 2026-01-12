@@ -1,0 +1,57 @@
+name: Pyodide
+
+on:
+  workflow_dispatch: {}
+  workflow_call: {}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-slim]
+        python-version: ["3.12"] # Match pyodide-build supported versions
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pyodide
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install pyodide-build>=0.27
+          echo EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version) >> $GITHUB_ENV
+
+      - name: Install Emscripten
+        uses: mymindstorm/setup-emsdk@6ab9eb1bda2574c4ddb79809fc9247783eaf9021 # v14
+        with:
+          version: ${{ env.EMSCRIPTEN_VERSION }}
+
+      - name: Build pyodide package
+        run: pyodide build
+
+      - name: Upload pyodide wheel
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: pyodide_wheel
+          path: dist
+
+  test:
+    needs: build
+    uses: ./.github/workflows/pyodide_test.yml
+    with:
+      build-artifact-name: pyodide_wheel
+      build-artifact-path: dist
+      browser: firefox
+      runner: selenium
+      pyodide-version: 0.27.2

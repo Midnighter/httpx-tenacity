@@ -1,0 +1,59 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+(a|b|rc|post|dev)[0-9]+"
+
+jobs:
+  prerequisites:
+    uses: ./.github/workflows/test.yml
+
+  pyodide:
+    uses: ./.github/workflows/pyodide.yml
+
+  release:
+    needs: [prerequisites, pyodide]
+    strategy:
+      matrix:
+        os: [ubuntu-slim]
+        python-version: ["3.14"]
+    runs-on: ${{ matrix.os }}
+    permissions:
+      # Write permissions are needed to create OIDC tokens.
+      id-token: write
+      # Write permissions are needed to make GitHub releases.
+      contents: write
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install hatch
+        uses: pypa/hatch@257e27e51a6a5616ed08a39a408a21c35c9931bc # install
+
+      - name: Build package
+        run: hatch build
+
+      # We rely on a trusted publisher configuration being present on PyPI,
+      # see https://docs.pypi.org/trusted-publishers/.
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+
+      - name: GH release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          body: >
+            Please see
+            https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/CHANGELOG.md
+            for the full release notes.
+          draft: false
+          prerelease: false
