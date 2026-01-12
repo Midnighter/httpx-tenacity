@@ -37,7 +37,7 @@ from httpx_tenacity.wait import smart_wait
 if TYPE_CHECKING:  # pragma: no cover
     from datetime import timedelta
 
-    from .types import HTTPXAsyncHTTPTransportKeywordArguments
+    from .types import HTTPXHTTPTransportKeywordArguments
 
 
 logger = logging.getLogger(__name__)
@@ -71,7 +71,7 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
         max_wait_seconds: float | timedelta = 60,
         min_wait_seconds: float | timedelta = 0.02,
         exponent_base: float = 2,
-        **kwargs: Unpack[HTTPXAsyncHTTPTransportKeywordArguments],
+        **kwargs: Unpack[HTTPXHTTPTransportKeywordArguments],
     ) -> AsyncTenaciousTransport:
         """
         Create an instance of an asynchronous tenacious (retrying) transport.
