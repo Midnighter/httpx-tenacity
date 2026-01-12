@@ -36,14 +36,13 @@ async def test_async_tenacious_transport(selenium_standalone):  # noqa: ARG001, 
     import httpx
     from httpx_tenacity import AsyncTenaciousTransport
 
-    async with (
-        httpx.AsyncClient(
-            transport=AsyncTenaciousTransport.create(
-                max_attempts=3,
-                max_wait_seconds=0.1,
-            ),
-        ) as client:
-            try:
-                response = await client.get("https://httpbin.org/status/429")
-            except tenacity.RetryError:
-                pass
+    async with httpx.AsyncClient(
+        transport=AsyncTenaciousTransport.create(
+            max_attempts=3,
+            max_wait_seconds=0.1,
+        ),
+    ) as client:
+        try:
+            await client.get("https://httpbin.org/status/500")
+        except tenacity.RetryError:
+            pass
