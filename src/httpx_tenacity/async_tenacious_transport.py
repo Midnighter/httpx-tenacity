@@ -80,6 +80,10 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
         `httpx.AsyncHTTPTransport`.
         That transport is passed any additional keyword arguments.
 
+        The constructed transport retries requests when there are server-side issues
+        and will either wait the time set in a Retry-After response header or use a
+        random exponential backoff.
+
         Args:
             max_attempts: Maximum number of attempts.
             multiplier: Multiplier for the exponential backoff between retries.
