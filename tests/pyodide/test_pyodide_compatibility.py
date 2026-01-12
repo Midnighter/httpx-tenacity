@@ -32,10 +32,16 @@ DISTRIBUTION_PATHS = [
     install_wheels=True,
     recurse_directories=False,
 )
-@run_in_pyodide(packages=["httpx", "tenacity"])
+@run_in_pyodide(packages=["ssl", "micropip", "httpx"])
 async def test_async_tenacious_transport(selenium_standalone):  # noqa: ARG001, ANN001
     """Test that we can import and use an asynchronous tenacious transport."""
     import httpx
+
+    import micropip
+
+    await micropip.install("tenacity ~=9.1")
+
+    import tenacity
     from httpx_tenacity import AsyncTenaciousTransport
 
     async with httpx.AsyncClient(
