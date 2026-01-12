@@ -15,9 +15,7 @@
 
 """Test httpx-tenacity's compatibility with Pyodide."""
 
-import contextlib
 
-import tenacity
 from pytest_pyodide import run_in_pyodide
 from pytest_pyodide.decorator import copy_files_to_pyodide
 
@@ -39,7 +37,7 @@ async def test_async_tenacious_transport(selenium_standalone):  # noqa: ARG001, 
 
     import micropip
 
-    await micropip.install("tenacity ~=9.1")
+    await micropip.install("tenacity")
 
     import tenacity
     from httpx_tenacity import AsyncTenaciousTransport
@@ -50,5 +48,7 @@ async def test_async_tenacious_transport(selenium_standalone):  # noqa: ARG001, 
             max_wait_seconds=0.1,
         ),
     ) as client:
-        with contextlib.suppress(tenacity.RetryError):
+        try:  # noqa: SIM105
             await client.get("https://httpbin.org/status/500")
+        except tenacity.RetryError:
+            pass
