@@ -1,4 +1,4 @@
-# Copyright (c) 2026 Moritz E. Beber
+# Copyright (c) 2024 Moritz E. Beber
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -13,7 +13,17 @@
 # the License.
 
 
-"""Provide top level symbols."""
+"""Define test suite-level fixtures."""
 
-from .types import HTTPXAsyncHTTPTransportKeywordArguments
-from .async_tenacious_transport import AsyncTenaciousTransport
+import pytest
+
+
+@pytest.fixture(
+    scope="session",
+    params=[
+        pytest.param(("asyncio", {"use_uvloop": False}), id="asyncio"),
+    ],
+)
+def anyio_backend(request: pytest.FixtureRequest) -> tuple[str, dict[str, bool]]:
+    """Set the anyio event loop."""
+    return request.param
