@@ -118,6 +118,6 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
         async for attempt in fresh_retry:
             with attempt:
                 response = await self._transport.handle_async_request(request)
-            if not attempt.retry_state.outcome.failed:
+            if attempt.retry_state.outcome and not attempt.retry_state.outcome.failed:
                 attempt.retry_state.set_result(response)
         return response
