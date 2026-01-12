@@ -15,5 +15,6 @@
 
 """Provide top level symbols."""
 
-from .types import HTTPXAsyncHTTPTransportKeywordArguments
+from .types import HTTPXHTTPTransportKeywordArguments
 from .async_tenacious_transport import AsyncTenaciousTransport
+from .tenacious_transport import TenaciousTransport

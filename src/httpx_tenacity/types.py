@@ -37,8 +37,8 @@ CertTypes: TypeAlias = str | tuple[str, str] | tuple[str, str, str]
 ProxyTypes: TypeAlias = httpx.URL | str | httpx.Proxy
 
 
-class HTTPXAsyncHTTPTransportKeywordArguments(TypedDict, total=False):
-    """Keyword arguments for the httpx.AsyncHTTPTransport constructor."""
+class HTTPXHTTPTransportKeywordArguments(TypedDict, total=False):
+    """Keyword arguments for the sync and async httpx HTTPTransport constructor."""
 
     verify: ssl.SSLContext | str | bool
     cert: CertTypes | None
