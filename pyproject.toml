@@ -119,6 +119,7 @@ exclude = ["src/httpx_tenacity/_version.py"]
     "INP001",  # 'Insecure input' ignored because we are testing.
     "ANN201",  # 'Missing type annotation for {return}' ignored because all tests return `None`.
     "PLR2004", # Magic numbers are okay in tests.
+    "FBT001",  # Boolean positional arguments are fine in tests.
 ]
 "tests/pyodide/**/*.py" = [
     "PLC0415", # We explicitly need imports inside function and ignore the '`import` should be at the top-level of a file' rule.
