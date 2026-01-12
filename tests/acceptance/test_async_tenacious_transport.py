@@ -18,11 +18,9 @@
 import anyio
 import httpx
 import pytest
-import tenacity
 from pytest_httpx import HTTPXMock
 
 from httpx_tenacity import AsyncTenaciousTransport
-from httpx_tenacity.retry_callback import is_server_side_issue
 
 
 @pytest.mark.anyio
@@ -76,8 +74,6 @@ async def test_server_error_retrying(
     httpx_mock: HTTPXMock,
 ):
     """Test that server error responses are retried."""
-    after_seconds = 1e-3
-
     httpx_mock.add_response(
         url="http://example1.com",
         status_code=httpx.codes.INTERNAL_SERVER_ERROR,
@@ -126,14 +122,9 @@ async def test_server_error_retrying(
 
     async with (
         httpx.AsyncClient(
-            transport=AsyncTenaciousTransport(
-                retry=tenacity.AsyncRetrying(
-                    retry=tenacity.retry_if_result(is_server_side_issue),
-                    stop=tenacity.stop_after_attempt(12),
-                    wait=tenacity.wait_fixed(after_seconds),
-                    reraise=True,
-                ),
-                transport=httpx.AsyncHTTPTransport(),
+            transport=AsyncTenaciousTransport.create(
+                max_attempts=12,
+                max_wait_seconds=1e-3,
             ),
         ) as client,
         anyio.create_task_group() as tg,
