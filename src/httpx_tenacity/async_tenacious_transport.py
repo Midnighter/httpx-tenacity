@@ -70,6 +70,7 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
         max_wait_seconds: float | timedelta = 60,
         min_wait_seconds: float | timedelta = 0.02,
         exponent_base: float = 2,
+        transport: httpx.AsyncBaseTransport | None = None,
         **kwargs: Unpack[HTTPXHTTPTransportKeywordArguments],
     ) -> AsyncTenaciousTransport:
         """
@@ -89,6 +90,8 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
             max_wait_seconds: Maximum wait time between retries.
             min_wait_seconds: Minimum wait time between retries.
             exponent_base: The base for the exponential backoff.
+            transport: Pass an asynchronous transport instance to handle requests
+                instead of the default one.
             **kwargs: Additional keyword arguments are used in the construction of an
                 `httpx.AsyncHTTPTransport`.
 
@@ -110,7 +113,9 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
                 before_sleep=tenacity.before_sleep_log(logger, logging.DEBUG),
                 reraise=True,
             ),
-            transport=httpx.AsyncHTTPTransport(**kwargs),
+            transport=httpx.AsyncHTTPTransport(**kwargs)
+            if transport is None
+            else transport,
         )
 
     async def handle_async_request(
