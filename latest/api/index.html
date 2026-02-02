@@ -765,7 +765,7 @@ appropriately configured tenacity retrying instance.</p>
 
 
 <h4 id="httpx_tenacity.TenaciousTransport.create" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">min_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">exponent_base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TenaciousTransport</span></code>
+            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">min_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">exponent_base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">BaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TenaciousTransport</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -874,6 +874,23 @@ random exponential backoff.</p>
             </td>
             <td>
                   <code>2</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>transport</code>
+            </td>
+            <td>
+                  <code><span title="httpx.BaseTransport">BaseTransport</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pass a transport instance to handle requests instead of the
+default one.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -1012,7 +1029,7 @@ appropriately configured tenacity retrying instance.</p>
 
 
 <h4 id="httpx_tenacity.AsyncTenaciousTransport.create" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">min_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">exponent_base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncTenaciousTransport</span></code>
+            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">min_wait_seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">exponent_base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncBaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncTenaciousTransport</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -1121,6 +1138,23 @@ random exponential backoff.</p>
             </td>
             <td>
                   <code>2</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>transport</code>
+            </td>
+            <td>
+                  <code><span title="httpx.AsyncBaseTransport">AsyncBaseTransport</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pass an asynchronous transport instance to handle requests
+instead of the default one.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
             </td>
           </tr>
           <tr class="doc-section-item">
