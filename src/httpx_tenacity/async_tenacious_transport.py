@@ -63,7 +63,7 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
         self._transport = transport
 
     @classmethod
-    def create(
+    def create(  # noqa: PLR0913
         cls,
         max_attempts: int = 5,
         multiplier: float = 1,
