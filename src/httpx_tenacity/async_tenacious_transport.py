@@ -39,7 +39,6 @@ if TYPE_CHECKING:  # pragma: no cover
 
     from .types import HTTPXHTTPTransportKeywordArguments
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -99,7 +98,8 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
         """
         return cls(
             retry=tenacity.AsyncRetrying(
-                retry=tenacity.retry_if_result(is_server_side_issue),
+                retry=tenacity.retry_if_exception_type(httpx.RequestError)
+                | tenacity.retry_if_result(is_server_side_issue),
                 stop=tenacity.stop_after_attempt(max_attempts),
                 wait=smart_wait(
                     multiplier=multiplier,
