@@ -24,6 +24,37 @@ from httpx_tenacity import AsyncTenaciousTransport
 
 
 @pytest.mark.anyio
+async def test_request_error_retrying():
+    """Test that a request error is retried."""
+
+    class FailingHTTPTransport(httpx.AsyncBaseTransport):
+        """Define an HTTP transport that always raises a request exception."""
+
+        def __init__(self) -> None:
+            super().__init__()
+            self.counter = 0
+
+        async def handle_async_request(self, request: httpx.Request) -> httpx.Response:
+            """Raise a request exception upon handling any request."""
+            self.counter += 1
+
+            raise httpx.RequestError("Network exploded!", request=request)  # noqa: EM101, TRY003
+
+    retry_transport = AsyncTenaciousTransport.create(
+        max_attempts=3, max_wait_seconds=1e-3,
+    )
+    http_transport = FailingHTTPTransport()
+    retry_transport._transport = http_transport
+    async with httpx.AsyncClient(transport=retry_transport) as client:
+        try:  # noqa: SIM105
+            await client.get("http://example.com")
+        except httpx.RequestError:
+            pass
+
+    assert http_transport.counter == 3
+
+
+@pytest.mark.anyio
 async def test_too_many_requests_retrying(
     httpx_mock: HTTPXMock,
 ):

@@ -99,7 +99,8 @@ class TenaciousTransport(httpx.BaseTransport):
         """
         return cls(
             retry=tenacity.Retrying(
-                retry=tenacity.retry_if_result(is_server_side_issue),
+                retry=tenacity.retry_if_exception_type(httpx.RequestError)
+                | tenacity.retry_if_result(is_server_side_issue),
                 stop=tenacity.stop_after_attempt(max_attempts),
                 wait=smart_wait(
                     multiplier=multiplier,
