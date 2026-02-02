@@ -37,9 +37,12 @@ def test_request_error_retrying():
 
             raise httpx.RequestError("Network exploded!", request=request)  # noqa: EM101, TRY003
 
-    retry_transport = TenaciousTransport.create(max_attempts=3, max_wait_seconds=1e-3)
     http_transport = FailingHTTPTransport()
-    retry_transport._transport = http_transport
+    retry_transport = TenaciousTransport.create(
+        max_attempts=3,
+        max_wait_seconds=1e-3,
+        transport=http_transport,
+    )
     with httpx.Client(transport=retry_transport) as client:
         try:  # noqa: SIM105
             client.get("http://example.com")

@@ -39,7 +39,6 @@ if TYPE_CHECKING:  # pragma: no cover
 
     from .types import HTTPXHTTPTransportKeywordArguments
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -71,6 +70,7 @@ class TenaciousTransport(httpx.BaseTransport):
         max_wait_seconds: float | timedelta = 60,
         min_wait_seconds: float | timedelta = 0.02,
         exponent_base: float = 2,
+        transport: httpx.BaseTransport | None = None,
         **kwargs: Unpack[HTTPXHTTPTransportKeywordArguments],
     ) -> TenaciousTransport:
         """
@@ -90,6 +90,8 @@ class TenaciousTransport(httpx.BaseTransport):
             max_wait_seconds: Maximum wait time between retries.
             min_wait_seconds: Minimum wait time between retries.
             exponent_base: The base for the exponential backoff.
+            transport: Pass a transport instance to handle requests instead of the
+                default one.
             **kwargs: Additional keyword arguments are used in the construction of an
                 `httpx.HTTPTransport`.
 
@@ -111,7 +113,7 @@ class TenaciousTransport(httpx.BaseTransport):
                 before_sleep=tenacity.before_sleep_log(logger, logging.DEBUG),
                 reraise=True,
             ),
-            transport=httpx.HTTPTransport(**kwargs),
+            transport=httpx.HTTPTransport(**kwargs) if transport is None else transport,
         )
 
     def handle_request(
