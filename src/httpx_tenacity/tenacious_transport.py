@@ -110,7 +110,7 @@ class TenaciousTransport(httpx.BaseTransport):
                     min=min_wait_seconds,
                     exp_base=exponent_base,
                 ),
-                before_sleep=tenacity.before_sleep_log(logger, logging.DEBUG),
+                before_sleep=tenacity.before_sleep_log(logger, logging.DEBUG),  # type: ignore[invalid-argument-type]
                 reraise=True,
             ),
             transport=httpx.HTTPTransport(**kwargs) if transport is None else transport,
