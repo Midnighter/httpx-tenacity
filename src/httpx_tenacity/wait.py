@@ -15,32 +15,70 @@
 
 """Provide custom wait functions."""
 
+from datetime import timedelta
+from typing import TYPE_CHECKING
+
 import httpx
 import tenacity
 from tenacity.wait import wait_random_exponential
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 # We follow tenacity's convention here to use lower snake-case class names for the wait
 # strategies.
 class smart_wait(wait_random_exponential):  # noqa: N801
     """
-    Wait strategy that smartly backs-off.
+    Define a wait strategy that smartly backs-off.
 
-    This strategy first checks the Retry-After response header for a wait time
-    indication and uses random exponential backoff if that is not the case.
+    This strategy first checks HTTP responses for an expected status code (by
+    default 429) that indicates that the server is busy. If the status code
+    matches, it checks the response header (by default  'Retry-After') for a
+    wait time indication. Otherwise, it uses random exponential backoff.
 
     """
 
-    def __call__(self, retry_state: tenacity.RetryCallState) -> float:  # noqa: D102
-        # When we have a successful outcome, i.e., we received an HTTP response without
-        # encountering a Python exception, check if the response headers indicate a wait
-        # time; otherwise use the random exponential strategy to determine the wait
-        # time.
+    def __init__(
+        self,
+        multiplier: float = 1,
+        max: timedelta | float = 60,  # noqa: A002
+        exp_base: float = 2,
+        min: timedelta | float = 0,  # noqa: A002
+        status_code: int | tuple[int, ...] = httpx.codes.TOO_MANY_REQUESTS,
+        header: str = "Retry-After",
+    ) -> None:
+        super().__init__(
+            multiplier=multiplier,
+            max=max,
+            exp_base=exp_base,
+            min=min,
+        )
+        self._status_code = status_code
+        self._check: Callable[[int], bool]
+        if isinstance(self._status_code, tuple):
+            self._check = lambda code: code in self._status_code  # type: ignore[operator]
+        else:
+            self._check = lambda code: code == self._status_code
+        self._header = header
+
+    def __call__(self, retry_state: tenacity.RetryCallState) -> float:
+        """
+        Return a wait time in seconds based on response headers or retry state.
+
+        When we have a successful outcome, i.e., we received an HTTP response
+        without encountering an exception, and the HTTP status code of the
+        response matches the specified status code, check if the response header
+        indicates a wait time; otherwise use the random exponential strategy to
+        determine the wait time.
+
+        """
         if retry_state.outcome and not retry_state.outcome.failed:
             response: httpx.Response = retry_state.outcome.result()
             if (
-                response.status_code == httpx.codes.TOO_MANY_REQUESTS
-                and (wait := response.headers.get("Retry-After")) is not None
+                self._check(response.status_code)
+                and (wait := response.headers.get(self._header)) is not None
             ):
                 return float(wait)
 
