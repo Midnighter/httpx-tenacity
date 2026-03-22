@@ -131,6 +131,9 @@ case-sensitive = true
 known-first-party = ["src", "httpx_tenacity"]
 lines-after-imports = 2
 
+[tool.ruff.lint.pylint]
+max-args = 6
+
 [tool.pydoclint]
 style = "google"
 arg-type-hints-in-docstring = false
