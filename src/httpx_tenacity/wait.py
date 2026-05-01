@@ -16,15 +16,10 @@
 """Provide custom wait functions."""
 
 from datetime import timedelta
-from typing import TYPE_CHECKING
 
 import httpx
 import tenacity
 from tenacity.wait import wait_random_exponential
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
 
 
 # We follow tenacity's convention here to use lower snake-case class names for the wait
@@ -56,12 +51,21 @@ class smart_wait(wait_random_exponential):  # noqa: N801
             min=min,
         )
         self._status_code = status_code
-        self._check: Callable[[int], bool]
         if isinstance(self._status_code, tuple):
-            self._check = lambda code: code in self._status_code  # type: ignore[operator]
+            self._check = self._check_one_of
         else:
-            self._check = lambda code: code == self._status_code
+            self._check = self._check_singular
         self._header = header
+
+    def _check_singular(self, code: int) -> bool:
+        """Check whether the given status code is an expected one."""
+        return code == self._status_code
+
+    def _check_one_of(self, code: int) -> bool:
+        """Check whether the given status code is one of the expected ones."""
+        # The assertion is needed for type checking.
+        assert isinstance(self._status_code, tuple)  # noqa: S101
+        return code in self._status_code
 
     def __call__(self, retry_state: tenacity.RetryCallState) -> float:
         """
