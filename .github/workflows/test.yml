@@ -75,7 +75,7 @@ jobs:
         run: hatch run +py=${{ matrix.python-version }} unit-tests:run -- --cov=httpx_tenacity --cov-report=term-missing --cov-report=xml
 
       - name: Report coverage
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
+        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5.5.4
         with:
           files: coverage.xml
           flags: unit-tests
@@ -104,7 +104,7 @@ jobs:
         run: hatch run +py=${{ matrix.python-version }} acceptance-tests:run -- --cov=httpx_tenacity --cov-report=term-missing --cov-report=xml
 
       - name: Report coverage
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
+        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5.5.4
         with:
           files: coverage.xml
           flags: acceptance-tests
