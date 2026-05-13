@@ -10,6 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     strategy:
       matrix:
         os: [ubuntu-slim]
@@ -49,6 +50,7 @@ jobs:
 
   test:
     needs: build
+    timeout-minutes: 15
     uses: ./.github/workflows/pyodide_test.yml
     with:
       build-artifact-name: pyodide_wheel

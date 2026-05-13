@@ -39,6 +39,7 @@ jobs:
         os: [ubuntu-slim]
         python-version: ["3.14"]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     permissions:
       # Write permissions are needed to write to gh-pages branch.
       contents: write
