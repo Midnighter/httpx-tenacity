@@ -6,6 +6,9 @@ on:
       - "[0-9]+.[0-9]+.[0-9]+"
       - "[0-9]+.[0-9]+.[0-9]+(a|b|rc|post|dev)[0-9]+"
 
+permissions:
+  contents: read
+
 jobs:
   prerequisites:
     uses: ./.github/workflows/test.yml
