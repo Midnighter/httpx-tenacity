@@ -65,8 +65,8 @@ jobs:
 
       - name: Build documentation with alias
         if: inputs.alias != ''
-        run: hatch run docs:deploy -- --update-aliases --push ${{ inputs.version }} ${{ inputs.alias }}
+        run: hatch run docs:deploy -- --update-aliases --push "${{ inputs.version }}" "${{ inputs.alias }}"
 
       - name: Build documentation without alias
         if: inputs.alias == ''
-        run: hatch run docs:deploy -- --push ${{ inputs.version }}
+        run: hatch run docs:deploy -- --push "${{ inputs.version }}"
