@@ -23,6 +23,7 @@ jobs:
         os: [ubuntu-latest]
         python-version: ["3.14"]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     permissions:
       # Write permissions are needed to create OIDC tokens.
       id-token: write

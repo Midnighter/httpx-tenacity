@@ -48,6 +48,7 @@ jobs:
   test:
     name: test (${{ inputs.pyodide-version}},${{ inputs.browser }},${{ inputs.runner }})
     runs-on: ${{ inputs.os }}
+    timeout-minutes: 15
     env:
       DISPLAY: :99
       FORCE_COLOR: 3
