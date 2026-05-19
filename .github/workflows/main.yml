@@ -16,6 +16,7 @@ permissions:
 jobs:
   prerequisites:
     uses: ./.github/workflows/test.yml
+    secrets: inherit
 
   pyodide:
     uses: ./.github/workflows/pyodide.yml
