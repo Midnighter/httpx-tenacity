@@ -445,9 +445,9 @@ setuptools-scm==10.0.5 \
     --hash=sha256:bbba8fe754516cdefd017f4456721775e6ef9662bd7887fb52ae26813d4838c3 \
     --hash=sha256:f611037d8aae618221503b8fa89319f073438252ae3420e01c9ceec249131a0a
     # via hatch-vcs
-trove-classifiers==2026.5.20.13 \
-    --hash=sha256:39488311115da459eba824bc928291723e29fb876f515af46933c5d5c617202c \
-    --hash=sha256:ba51ff2e5c24bd5a23e17a8170acb7940ab677a5f90eed1ff5b03ca57be11732
+trove-classifiers==2026.5.22.10 \
+    --hash=sha256:01fe864225726e03efb843827ecabfe319fc4dee8dd66d65b8996cb09be46e2c \
+    --hash=sha256:5477e9974e91904fb2cfa4a7581ab6e2f30c2c38d847fd00ed866080748101d5
     # via hatchling
 twine==6.2.0 \
     --hash=sha256:418ebf08ccda9a8caaebe414433b0ba5e25eb5e4a927667122fbe8f829f985d8 \
