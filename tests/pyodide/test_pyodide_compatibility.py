@@ -41,13 +41,17 @@ async def test_async_tenacious_transport(selenium_standalone):  # noqa: ARG001, 
     import tenacity
     from httpx_tenacity import AsyncTenaciousTransport
 
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(500, text="Server Error")
+
     async with httpx.AsyncClient(
         transport=AsyncTenaciousTransport.create(
             max_attempts=3,
             max_wait_seconds=0.1,
+            transport=httpx.MockTransport(handler=handler),
         ),
     ) as client:
         try:  # noqa: SIM105
-            await client.get("https://httpbin.org/status/500")
+            await client.get("http://example.com")
         except tenacity.RetryError:
             pass
