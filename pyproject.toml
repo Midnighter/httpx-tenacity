@@ -185,7 +185,7 @@ docstrings = ["pydoclint src", "pydoclint tests"]
 code = "ruff check {args}"
 format = "ruff format {args}"
 fix = "ruff check --fix {args}"
-check = ["docstrings", "code"]
+check = ["docstrings", "format --check", "code"]
 
 [tool.hatch.envs.audit]
 description = """Check dependencies for security vulnerabilities."""
