@@ -42,11 +42,11 @@ Adjust retry parameters when creating the transport:
 
 ```python
 transport = TenaciousTransport.create(
-    max_attempts=10,           # Try up to 10 times
-    multiplier=2,              # Exponential backoff multiplier
-    min_wait_seconds=0.1,      # Minimum 0.1 second between retries
-    max_wait_seconds=120,      # Maximum 2 minutes between retries
-    exponent_base=2,           # Base for exponential calculation
+    max_attempts=10,  # Try up to 10 times
+    multiplier=2,  # Exponential backoff multiplier
+    min_wait_seconds=0.1,  # Minimum 0.1 second between retries
+    max_wait_seconds=120,  # Maximum 2 minutes between retries
+    exponent_base=2,  # Base for exponential calculation
 )
 client = httpx.Client(transport=transport)
 ```
@@ -58,7 +58,7 @@ Additional keyword arguments are passed to the underlying HTTPX transport:
 ```python
 transport = TenaciousTransport.create(
     max_attempts=5,
-    verify=False,              # Disable SSL verification
+    verify=False,  # Disable SSL verification
     limits=httpx.Limits(max_connections=10),
 )
 client = httpx.Client(transport=transport)
@@ -83,10 +83,12 @@ For full control over retry behavior, provide a custom tenacity
 from tenacity import Retrying, stop_after_attempt, wait_fixed
 from httpx_tenacity import TenaciousTransport
 
-transport = TenaciousTransport(retry=Retrying(
-    stop=stop_after_attempt(3),
-    wait=wait_fixed(1),
-))
+transport = TenaciousTransport(
+    retry=Retrying(
+        stop=stop_after_attempt(3),
+        wait=wait_fixed(1),
+    )
+)
 client = httpx.Client(transport=transport)
 ```
 
