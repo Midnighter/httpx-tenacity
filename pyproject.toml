@@ -17,7 +17,7 @@ description = "A lightweight package that provides tenacious (retrying) httpx tr
 authors = [{ name = "Moritz E. Beber", email = "midnighter@posteo.net" }]
 license = "Apache-2.0"
 readme = { "file" = "README.md", "content-type" = "text/markdown" }
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 # Please consult https://pypi.org/classifiers/ for a full list.
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -27,11 +27,11 @@ classifiers = [
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Topic :: Internet :: WWW/HTTP",
     "Typing :: Typed",
 ]
@@ -39,7 +39,6 @@ keywords = ["httpx", "tenacity", "retry"]
 dependencies = [
     "httpx ~=0.25",
     "tenacity ~=9.1",
-    "typing-extensions ~=4.6; python_version < '3.11'",
 ]
 
 [project.urls]
@@ -228,7 +227,7 @@ PYTHONDEVMODE = "1"
 PYTHONASYNCIODEBUG = "1"
 
 [[tool.hatch.envs.unit-tests.matrix]]
-python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+python = ["3.11", "3.12", "3.13", "3.14", "3.15"]
 
 [tool.hatch.envs.unit-tests.scripts]
 run = "pytest {args:--cov=httpx_tenacity --cov-report=term-missing} {root}/tests/unit"
@@ -242,7 +241,7 @@ PYTHONDEVMODE = "1"
 PYTHONASYNCIODEBUG = "1"
 
 [[tool.hatch.envs.acceptance-tests.matrix]]
-python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+python = ["3.11", "3.12", "3.13", "3.14", "3.15"]
 
 [tool.hatch.envs.acceptance-tests.scripts]
 run = "pytest {args:--cov=httpx_tenacity --cov-report=term-missing} {root}/tests/acceptance"

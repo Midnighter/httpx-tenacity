@@ -16,7 +16,6 @@
 # - ty
 # - httpx~=0.25
 # - tenacity~=9.1
-# - typing-extensions~=4.6; python_version < "3.11"
 # - mkdocs-material~=9.5
 # - mkdocstrings[python]~=1.0
 # - mkdocs-awesome-pages-plugin~=2.9
@@ -465,6 +464,10 @@ iniconfig==2.3.1 \
     --hash=sha256:67f4b9c50da0dedf52af349e7749a80a9057a5031199791b906c3bb3ae878960 \
     --hash=sha256:9121e2c1fdb355232495be3194c8dfe87ccc2d5dee45947b78e68f499790d7a7
     # via pytest
+inversion==1.0.1 \
+    --hash=sha256:39b0d99da7924bcb21fc3e96ef2ac85dc83346461f74dd6a758ecaff3c75bb8e \
+    --hash=sha256:a8b7b7bb1bef85318179421ef11e5222bd492f477373f0dcb80f323f8b0595d2
+    # via verspec
 jinja2==3.1.6 \
     --hash=sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d \
     --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67
