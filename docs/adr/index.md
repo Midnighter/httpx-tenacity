@@ -6,3 +6,4 @@ status.
 ## Accepted
 
 -   [ADR001 - Adopt tenacity for retrying](adr001-adopt-tenacity-for-retrying.md)
+-   [ADR002 - Use composition over inheritance](adr002-use-composition-over-inheritance.md)
