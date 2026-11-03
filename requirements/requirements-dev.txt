@@ -918,9 +918,9 @@ pluggy==1.7.0 \
     # via
     #   pytest
     #   pytest-cov
-pydoclint==0.11.1 \
-    --hash=sha256:d3e44a09deb631d0910982b70c614d1c54d0809d2116d58114abe9d24f7c6cf6 \
-    --hash=sha256:eab39580102312241ec71ef9fc4d7994b225e65ad71205c511557c4b928ed13e
+pydoclint==0.12.0 \
+    --hash=sha256:28f5763a865cb19b54883dfe68b05b01d2c2fc2e8d59dcf424cc345bc976a689 \
+    --hash=sha256:ac061ae24381547e41d5a45044a1f88c87a54541b67ec959bd5160c69256482c
     # via hatch.envs.dev
 pygments==2.21.0 \
     --hash=sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9 \
