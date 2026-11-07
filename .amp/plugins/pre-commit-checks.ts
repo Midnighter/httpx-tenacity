@@ -6,7 +6,7 @@ export const description =
 
 const repoRoot = path.resolve(import.meta.dir, '..', '..')
 
-// The CI lint, unit-test, and acceptance-test jobs, one Python version per job.
+// The CI lint, unit-test, acceptance-test, and documentation-test jobs, one Python version per job.
 const checks = [
 	'hatch run style:check',
 	'hatch run types:check',
@@ -15,6 +15,7 @@ const checks = [
 	'hatch run +py=3.11 unit-tests:run',
 	'hatch run +py=3.15 unit-tests:run',
 	'hatch run +py=3.14 acceptance-tests:run',
+	'hatch run +py=3.15 documentation-tests:run',
 ]
 
 // `git commit`, also with global options such as `git -C dir commit`, but not

@@ -250,3 +250,18 @@ python = ["3.11", "3.12", "3.13", "3.14", "3.15"]
 
 [tool.hatch.envs.acceptance-tests.scripts]
 run = "pytest {args:--cov=httpx_tenacity --cov-report=term-missing} {root}/tests/acceptance"
+
+[tool.hatch.envs.documentation-tests]
+description = """Run the code examples in the documentation."""
+dependency-groups = ["tests"]
+extra-dependencies = ["mktestdocs"]
+
+[tool.hatch.envs.documentation-tests.env-vars]
+PYTHONDEVMODE = "1"
+PYTHONASYNCIODEBUG = "1"
+
+[[tool.hatch.envs.documentation-tests.matrix]]
+python = ["3.11", "3.12", "3.13", "3.14", "3.15"]
+
+[tool.hatch.envs.documentation-tests.scripts]
+run = "pytest {args:--cov=httpx_tenacity --cov-report=term-missing} {root}/tests/documentation"
