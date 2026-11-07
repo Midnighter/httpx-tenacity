@@ -14,7 +14,7 @@ const checks = [
 	'hatch run distribution:check',
 	'hatch run +py=3.11 unit-tests:run',
 	'hatch run +py=3.15 unit-tests:run',
-	'hatch run +py=3.14 acceptance-tests:run',
+	'hatch run +py=3.15 acceptance-tests:run',
 	'hatch run +py=3.15 documentation-tests:run',
 ]
 

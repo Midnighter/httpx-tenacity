@@ -31,7 +31,7 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
   auto-fix with `hatch run style:fix` and `hatch run style:format`.
 - Types: `hatch run types:check` (mypy, ty, and pyrefly).
 - Unit tests: `hatch run +py=3.15 unit-tests:run`
-- Acceptance tests: `hatch run +py=3.14 acceptance-tests:run`
+- Acceptance tests: `hatch run +py=3.15 acceptance-tests:run`
 - Documentation tests: `hatch run +py=3.15 documentation-tests:run`
 - Docs: `hatch run docs:build` (strict).
 - Do not commit changes hatch-pip-compile makes to `requirements/*.txt` unless
