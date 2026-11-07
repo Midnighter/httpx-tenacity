@@ -83,7 +83,7 @@ def test_sync_transport_uses_custom_policy():
         (
             tenacity.Retrying,
             httpx.RequestError,
-            logging.getLogger("httpx_tenacity.tenacious_transport"),
+            logging.getLogger("httpx_tenacity.httpx.tenacious_transport"),
         ),
     ]
     assert len(requests) == 2
@@ -111,7 +111,7 @@ async def test_async_transport_uses_custom_policy():
         (
             tenacity.AsyncRetrying,
             httpx.RequestError,
-            logging.getLogger("httpx_tenacity.async_tenacious_transport"),
+            logging.getLogger("httpx_tenacity.httpx.async_tenacious_transport"),
         ),
     ]
     assert len(requests) == 2

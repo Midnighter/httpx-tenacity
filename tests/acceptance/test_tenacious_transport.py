@@ -19,7 +19,7 @@ import httpx
 from pytest_httpx import HTTPXMock
 
 from httpx_tenacity import SmartRetryPolicy
-from httpx_tenacity.tenacious_transport import TenaciousTransport
+from httpx_tenacity.httpx.tenacious_transport import TenaciousTransport
 
 
 def test_request_error_retrying():
