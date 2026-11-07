@@ -418,6 +418,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#custom-retry-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Retry Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#completely-custom-retry-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -490,6 +501,8 @@
       
         
           
+        
+      
         
       
         
@@ -588,6 +601,34 @@
     
   
     ADR002 - Use composition over inheritance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/adr003-configure-retries-with-a-retry-policy-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR003 - Configure retries with a retry policy protocol
   
 
     
@@ -700,6 +741,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#custom-retry-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Retry Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#completely-custom-retry-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -772,28 +824,38 @@ support.</p>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://api.example.com/data"</span><span class="p">)</span>
 </code></pre></div>
-<p>The <code>create()</code> method constructs a transport with sensible defaults:</p>
+<p>The <code>create()</code> method uses the default
+<a class="autorefs autorefs-internal" href="../api/#httpx_tenacity.SmartRetryPolicy"><code>SmartRetryPolicy</code></a>, which has sensible
+defaults:</p>
 <ul>
 <li>Maximum 5 retry attempts</li>
 <li>Exponential backoff with base 2</li>
 <li>Minimum wait of 0.02 seconds between retries</li>
 <li>Maximum wait of 60 seconds between retries</li>
+<li>The wait time from the Retry-After header of 429 Too Many Requests responses</li>
 </ul>
 <h3 id="configuring-retry-behavior">Configuring Retry Behavior<a class="headerlink" href="#configuring-retry-behavior" title="Permanent link">&para;</a></h3>
-<p>Adjust retry parameters when creating the transport:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># Try up to 10 times</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">multiplier</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Exponential backoff multiplier</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">min_wait_seconds</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Minimum 0.1 second between retries</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">max_wait_seconds</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>  <span class="c1"># Maximum 2 minutes between retries</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">exponent_base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Base for exponential calculation</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
+<p>Pass a configured policy when creating the transport:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmartRetryPolicy</span><span class="p">,</span> <span class="n">TenaciousTransport</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">policy</span><span class="o">=</span><span class="n">SmartRetryPolicy</span><span class="p">(</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># Try up to 10 times</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="n">multiplier</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Exponential backoff multiplier</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="n">min_wait_seconds</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Minimum 0.1 second between retries</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="n">max_wait_seconds</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>  <span class="c1"># Maximum 2 minutes between retries</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="n">exponent_base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Base for exponential calculation</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="n">status_code</span><span class="o">=</span><span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">),</span>  <span class="c1"># Responses whose header sets the wait time</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="n">header</span><span class="o">=</span><span class="s2">"Retry-After"</span><span class="p">,</span>  <span class="c1"># Header that holds the wait time in seconds</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="p">),</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
 </code></pre></div>
+<p>The same policy works for both the synchronous and the asynchronous transport.</p>
 <h3 id="passing-transport-configuration">Passing Transport Configuration<a class="headerlink" href="#passing-transport-configuration" title="Permanent link">&para;</a></h3>
 <p>Additional keyword arguments are passed to the underlying HTTPX transport:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">policy</span><span class="o">=</span><span class="n">SmartRetryPolicy</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Disable SSL verification</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">limits</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Limits</span><span class="p">(</span><span class="n">max_connections</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">)</span>
@@ -805,36 +867,66 @@ support.</p>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 </code></pre></div>
+<h3 id="custom-retry-policies">Custom Retry Policies<a class="headerlink" href="#custom-retry-policies" title="Permanent link">&para;</a></h3>
+<p>Any object with a <code>create()</code> method that matches the
+<a class="autorefs autorefs-internal" href="../api/#httpx_tenacity.RetryPolicy"><code>RetryPolicy</code></a> protocol can replace the default
+policy. The transport calls it with the tenacity retrying class it needs, its
+HTTP client's request error, and its logger:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">tenacity</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">RetryingT</span><span class="p">,</span> <span class="n">TenaciousTransport</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">FixedRetryPolicy</span><span class="p">:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="bp">self</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="n">retrying_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">RetryingT</span><span class="p">],</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="n">request_error</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RetryingT</span><span class="p">:</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>        <span class="k">return</span> <span class="n">retrying_class</span><span class="p">(</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>            <span class="n">retry</span><span class="o">=</span><span class="n">tenacity</span><span class="o">.</span><span class="n">retry_if_exception_type</span><span class="p">(</span><span class="n">request_error</span><span class="p">),</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>            <span class="n">stop</span><span class="o">=</span><span class="n">tenacity</span><span class="o">.</span><span class="n">stop_after_attempt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>            <span class="n">wait</span><span class="o">=</span><span class="n">tenacity</span><span class="o">.</span><span class="n">wait_fixed</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>            <span class="n">before_sleep</span><span class="o">=</span><span class="n">tenacity</span><span class="o">.</span><span class="n">before_sleep_log</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">),</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>            <span class="n">reraise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>        <span class="p">)</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="n">FixedRetryPolicy</span><span class="p">())</span>
+</code></pre></div>
 <h3 id="completely-custom-retry-logic">Completely Custom Retry Logic<a class="headerlink" href="#completely-custom-retry-logic" title="Permanent link">&para;</a></h3>
 <p>For full control over retry behavior, provide a custom tenacity
 <code>Retrying</code> instance:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Retrying</span><span class="p">,</span> <span class="n">stop_after_attempt</span><span class="p">,</span> <span class="n">wait_fixed</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenaciousTransport</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="p">(</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">retry</span><span class="o">=</span><span class="n">Retrying</span><span class="p">(</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="n">stop</span><span class="o">=</span><span class="n">stop_after_attempt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="n">wait</span><span class="o">=</span><span class="n">wait_fixed</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="p">)</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">)</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Retrying</span><span class="p">,</span> <span class="n">stop_after_attempt</span><span class="p">,</span> <span class="n">wait_fixed</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenaciousTransport</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="p">(</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">retry</span><span class="o">=</span><span class="n">Retrying</span><span class="p">(</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="n">stop</span><span class="o">=</span><span class="n">stop_after_attempt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="n">wait</span><span class="o">=</span><span class="n">wait_fixed</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="asynchronous-usage">Asynchronous Usage<a class="headerlink" href="#asynchronous-usage" title="Permanent link">&para;</a></h2>
 <p>The asynchronous transport works in an analogous manner and can be configured as
 described above for the synchronous transport. Retrying also works with
 concurrent requests over the same transport instance.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">anyio</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncTenaciousTransport</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">():</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="k">async</span> <span class="k">with</span> <span class="p">(</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">AsyncTenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">())</span> <span class="k">as</span> <span class="n">client</span><span class="p">,</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="n">anyio</span><span class="o">.</span><span class="n">create_task_group</span><span class="p">()</span> <span class="k">as</span> <span class="n">tg</span><span class="p">,</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="p">):</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>        <span class="n">tg</span><span class="o">.</span><span class="n">start_soon</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="s2">"https://api.example.com/data"</span><span class="p">)</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>        <span class="n">tg</span><span class="o">.</span><span class="n">start_soon</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="s2">"https://api.example.com/data"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">anyio</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncTenaciousTransport</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">():</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="k">async</span> <span class="k">with</span> <span class="p">(</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">AsyncTenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">())</span> <span class="k">as</span> <span class="n">client</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        <span class="n">anyio</span><span class="o">.</span><span class="n">create_task_group</span><span class="p">()</span> <span class="k">as</span> <span class="n">tg</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="p">):</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>        <span class="n">tg</span><span class="o">.</span><span class="n">start_soon</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="s2">"https://api.example.com/data"</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>        <span class="n">tg</span><span class="o">.</span><span class="n">start_soon</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="s2">"https://api.example.com/data"</span><span class="p">)</span>
 </code></pre></div>
 
 
