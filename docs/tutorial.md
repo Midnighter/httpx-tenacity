@@ -44,6 +44,7 @@ defaults:
 Pass a configured policy when creating the transport:
 
 ```python
+import httpx
 from httpx_tenacity import SmartRetryPolicy, TenaciousTransport
 
 transport = TenaciousTransport.create(
@@ -67,6 +68,9 @@ The same policy works for both the synchronous and the asynchronous transport.
 Additional keyword arguments are passed to the underlying HTTPX transport:
 
 ```python
+import httpx
+from httpx_tenacity import SmartRetryPolicy, TenaciousTransport
+
 transport = TenaciousTransport.create(
     policy=SmartRetryPolicy(max_attempts=5),
     verify=False,  # Disable SSL verification
@@ -125,6 +129,7 @@ For full control over retry behavior, provide a custom tenacity
 `Retrying` instance:
 
 ```python
+import httpx
 from tenacity import Retrying, stop_after_attempt, wait_fixed
 from httpx_tenacity import TenaciousTransport
 
@@ -132,7 +137,8 @@ transport = TenaciousTransport(
     retry=Retrying(
         stop=stop_after_attempt(3),
         wait=wait_fixed(1),
-    )
+    ),
+    transport=httpx.HTTPTransport(),
 )
 client = httpx.Client(transport=transport)
 ```
@@ -149,11 +155,14 @@ import httpx
 from httpx_tenacity import AsyncTenaciousTransport
 
 
-async def fetch_data():
+async def main():
     async with (
         httpx.AsyncClient(transport=AsyncTenaciousTransport.create()) as client,
         anyio.create_task_group() as tg,
     ):
         tg.start_soon(client.get, "https://api.example.com/data")
         tg.start_soon(client.post, "https://api.example.com/data")
+
+
+anyio.run(main)
 ```
