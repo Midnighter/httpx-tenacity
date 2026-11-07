@@ -26,12 +26,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- `TenaciousTransport` and `AsyncTenaciousTransport` now close the transport
-  they wrap. Previously, closing them, directly or via a client, never reached
-  the inner transport, so the connection pool of the default
-  `httpx.HTTPTransport` / `httpx.AsyncHTTPTransport` was never closed. The
-  wrapper owns the inner transport, including one passed to
-  `create(transport=...)`.
+- `TenaciousTransport` and `AsyncTenaciousTransport` now enter, exit and close
+  the transport they wrap. Previously, using them as context managers, via a
+  client, or calling `close()` / `aclose()` never reached the inner transport,
+  so the connection pool of the default `httpx.HTTPTransport` /
+  `httpx.AsyncHTTPTransport` was never closed. The wrapper owns the inner
+  transport, including one passed to `create(transport=...)`.
 
 ### Removed
 

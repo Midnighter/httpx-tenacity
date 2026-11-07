@@ -18,7 +18,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Unpack
+from typing import TYPE_CHECKING, Self, Unpack
 
 import httpx
 import tenacity
@@ -27,6 +27,8 @@ from httpx_tenacity.retry_policy import RetryPolicy, SmartRetryPolicy
 
 
 if TYPE_CHECKING:  # pragma: no cover
+    from types import TracebackType
+
     from .types import HTTPXHTTPTransportKeywordArguments
 
 logger = logging.getLogger(__name__)
@@ -40,8 +42,8 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
     appropriately configured tenacity retrying instance.
 
     The transport owns the composed transport, including one that you pass in
-    yourself. Closing this transport closes the composed transport, in the same way
-    that `httpx.AsyncClient` treats its transport.
+    yourself. Entering, exiting, or closing this transport does the same to the
+    composed transport, in the same way that `httpx.AsyncClient` treats its transport.
 
     """
 
@@ -114,6 +116,20 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
             if attempt.retry_state.outcome and not attempt.retry_state.outcome.failed:
                 attempt.retry_state.set_result(response)
         return response  # pyrefly: ignore[unbound-name]
+
+    async def __aenter__(self) -> Self:
+        """Enter the composed transport and return this transport."""
+        await self._transport.__aenter__()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None = None,
+        exc_value: BaseException | None = None,
+        traceback: TracebackType | None = None,
+    ) -> None:
+        """Exit the composed transport, passing on any exception details."""
+        await self._transport.__aexit__(exc_type, exc_value, traceback)
 
     async def aclose(self) -> None:
         """Close the composed transport."""
