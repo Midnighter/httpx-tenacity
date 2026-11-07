@@ -104,4 +104,4 @@ class TenaciousTransport(httpx.BaseTransport):
                 response = self._transport.handle_request(request)
             if attempt.retry_state.outcome and not attempt.retry_state.outcome.failed:
                 attempt.retry_state.set_result(response)
-        return response
+        return response  # pyrefly: ignore[unbound-name]

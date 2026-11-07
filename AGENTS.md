@@ -28,7 +28,7 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 
 - Style: `hatch run style:check` (pydoclint, `ruff format --check`, `ruff check`);
   auto-fix with `hatch run style:fix` and `hatch run style:format`.
-- Types: `hatch run types:check` (mypy and ty).
+- Types: `hatch run types:check` (mypy, ty, and pyrefly).
 - Unit tests: `hatch run +py=3.15 unit-tests:run`
 - Acceptance tests: `hatch run +py=3.14 acceptance-tests:run`
 - Docs: `hatch run docs:build` (strict).
@@ -56,7 +56,7 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - Use `# noqa: <CODE>` only with a specific rule code and when the rule truly does not
   apply.
 - Async tests use `@pytest.mark.anyio`.
-- Fully typed (`py.typed`); mypy and ty must pass.
+- Fully typed (`py.typed`); mypy, ty, and pyrefly must pass.
 - Tests use `assert` and are exempt from some annotation rules. Add or extend tests for
   both the sync and async transports.
 

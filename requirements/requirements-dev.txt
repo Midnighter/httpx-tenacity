@@ -14,6 +14,7 @@
 # - pytest-raises
 # - mypy
 # - ty
+# - pyrefly
 # - httpx~=0.25
 # - tenacity~=9.1
 # - mkdocs-material~=9.5
@@ -29,6 +30,7 @@
 # - pytest-raises
 # - mypy
 # - ty
+# - pyrefly
 #
 
 anyio==4.16.0 \
@@ -938,6 +940,20 @@ pyparsing==3.3.3 \
     --hash=sha256:928ae7e20211f3b6f3915a72f06a0cfd29ab9d24279dd6346b6b1a7146397d36 \
     --hash=sha256:ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4
     # via mike
+pyrefly==1.4.1 \
+    --hash=sha256:19c35e7e63a02076fc555bdb0800302b89bb419e3de2814ab8274c0c6ac00158 \
+    --hash=sha256:1ef91afbaca15336482dd21292974f64a735268ce4990d59e87162d5a097106d \
+    --hash=sha256:3b5abcceca279973fa7312c958c06ee760a1b4a3feb9f3b89fd4520e53658aef \
+    --hash=sha256:49d2ac460fffbe5b8e0c20e991bf87978805d7aba3bb7f04d9b53a1a0e1d6430 \
+    --hash=sha256:4a1d892483bda655a206b4a7578ab36aebaaf89799a7a9d29d22c0bbdc1b6ba0 \
+    --hash=sha256:5353f958134522a5c45d846825b49e0049dafd73022f68d0db9e54242b3f7eeb \
+    --hash=sha256:6035b0ff640a8e7d751f31e520b3b0dc6bb42c76a57cd43819ca0e9354cd37fe \
+    --hash=sha256:8363f888f19b53d4b40e54d89e65b127ea68cd1cf8604de2824dffdc9d7900e9 \
+    --hash=sha256:9c5a4a3f0ec00ae66a13f5741c355980685111b7008289c0b850e9be931aa3fa \
+    --hash=sha256:c49122412a990469ee0a9e5a50dd38f6990e42f903b3cc0f7dcf0c7a84997c65 \
+    --hash=sha256:dbd065dbdc920b5e1d03bd8f035f59dae4379332ca854df8fe7ddccc43059533 \
+    --hash=sha256:eaba21336993765373e7e888de90f4d58214ce38994804eef902a6c8148df21f
+    # via hatch.envs.dev
 pytest==9.2.0 \
     --hash=sha256:07acdcf88ec174f907dc01af70bf52d49b014bbab03faeeade31c96b18c2e588 \
     --hash=sha256:97c4f3b1f3c7414aa36465e09b8220f1d03627993bd51b1282e193753c80557b
@@ -1106,6 +1122,10 @@ typing-extensions==4.16.0 \
     # via
     #   anyio
     #   mypy
+tzdata==2026.6 \
+    --hash=sha256:0a10eec6e13ef16b627fabed9a5f2ba61a62b1c67f327305f4e7e412a70b4aec \
+    --hash=sha256:85d2cd9c09f81f0bb29db27759fc83af4f1e620efb814f8c5bf8b4cc4feece6d
+    # via python-dateutil
 urllib3==2.8.0 \
     --hash=sha256:0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3 \
     --hash=sha256:63bf2ead4c879426ebf22ef2a781eeb4aa3b4ae798a0435506f8687fd5bb9b63
