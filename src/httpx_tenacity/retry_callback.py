@@ -15,13 +15,20 @@
 
 """Provide custom retry callback functions."""
 
-import httpx
+from __future__ import annotations
+
+from http import HTTPStatus
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:  # pragma: no cover
+    from httpx_tenacity._types import Response
 
 
 HTTP_SERVER_ERROR_UPPER_LIMIT = 599
 
 
-def is_server_side_issue(response: httpx.Response) -> bool:
+def is_server_side_issue(response: Response) -> bool:
     """
     Return whether the response indicates a server side issue.
 
@@ -30,10 +37,10 @@ def is_server_side_issue(response: httpx.Response) -> bool:
 
     """
     if (
-        httpx.codes.INTERNAL_SERVER_ERROR
+        HTTPStatus.INTERNAL_SERVER_ERROR
         <= response.status_code
         <= HTTP_SERVER_ERROR_UPPER_LIMIT
     ):
         return True
 
-    return response.status_code == httpx.codes.TOO_MANY_REQUESTS
+    return response.status_code == HTTPStatus.TOO_MANY_REQUESTS

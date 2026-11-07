@@ -15,11 +15,20 @@
 
 """Provide custom wait functions."""
 
-from datetime import timedelta
+from __future__ import annotations
 
-import httpx
-import tenacity
+from http import HTTPStatus
+from typing import TYPE_CHECKING
+
 from tenacity.wait import wait_random_exponential
+
+
+if TYPE_CHECKING:  # pragma: no cover
+    from datetime import timedelta
+
+    import tenacity
+
+    from httpx_tenacity._types import Response
 
 
 # We follow tenacity's convention here to use lower snake-case class names for the wait
@@ -41,7 +50,7 @@ class smart_wait(wait_random_exponential):  # noqa: N801
         max: timedelta | float = 60,  # noqa: A002
         exp_base: float = 2,
         min: timedelta | float = 0,  # noqa: A002
-        status_code: int | tuple[int, ...] = httpx.codes.TOO_MANY_REQUESTS,
+        status_code: int | tuple[int, ...] = HTTPStatus.TOO_MANY_REQUESTS,
         header: str = "Retry-After",
     ) -> None:
         super().__init__(
@@ -79,7 +88,7 @@ class smart_wait(wait_random_exponential):  # noqa: N801
 
         """
         if retry_state.outcome and not retry_state.outcome.failed:
-            response: httpx.Response = retry_state.outcome.result()
+            response: Response = retry_state.outcome.result()
             if (
                 self._check(response.status_code)
                 and (wait := response.headers.get(self._header)) is not None
