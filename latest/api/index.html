@@ -413,10 +413,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#httpx_tenacity.TenaciousTransport.__enter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __enter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.TenaciousTransport.__exit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __exit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#httpx_tenacity.TenaciousTransport.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.TenaciousTransport.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        close
       
     </span>
   </a>
@@ -463,10 +496,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aenter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aexit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#httpx_tenacity.AsyncTenaciousTransport.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.AsyncTenaciousTransport.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aclose
       
     </span>
   </a>
@@ -865,10 +931,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#httpx_tenacity.TenaciousTransport.__enter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __enter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.TenaciousTransport.__exit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __exit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#httpx_tenacity.TenaciousTransport.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.TenaciousTransport.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        close
       
     </span>
   </a>
@@ -915,10 +1014,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aenter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aexit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#httpx_tenacity.AsyncTenaciousTransport.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.AsyncTenaciousTransport.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aclose
       
     </span>
   </a>
@@ -1201,6 +1333,9 @@
         <p>Define the synchronous tenacious (retrying) transport.</p>
 <p>This transport consists of a composed transport for handling requests and an
 appropriately configured tenacity retrying instance.</p>
+<p>The transport owns the composed transport, including one that you pass in
+yourself. Entering, exiting, or closing this transport does the same to the
+composed transport, in the same way that <code>httpx.Client</code> treats its transport.</p>
 
 
 
@@ -1226,6 +1361,42 @@ appropriately configured tenacity retrying instance.</p>
 <div class="doc doc-object doc-function">
 
 
+<h4 id="httpx_tenacity.TenaciousTransport.__enter__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__enter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
+
+<a href="#httpx_tenacity.TenaciousTransport.__enter__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enter the composed transport and return this transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.TenaciousTransport.__exit__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.TenaciousTransport.__exit__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Exit the composed transport, passing on any exception details.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="httpx_tenacity.TenaciousTransport.__init__" class="doc doc-heading">
             <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">Retrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">BaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
@@ -1233,6 +1404,24 @@ appropriately configured tenacity retrying instance.</p>
 
 
     <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.TenaciousTransport.close" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.TenaciousTransport.close" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Close the composed transport.</p>
 
 
     </div>
@@ -1262,6 +1451,8 @@ That transport is passed any additional keyword arguments.</p>
 <code>SmartRetryPolicy</code> retries requests when there are server-side issues
 and will either wait the time set in a Retry-After response header or use a
 random exponential backoff.</p>
+<p>The returned transport owns the underlying transport, including one passed in
+as <code>transport</code>, and closes it when it is closed.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1402,6 +1593,9 @@ default one.</p>
         <p>Define the asynchronous tenacious (retrying) transport.</p>
 <p>This transport consists of a composed transport for handling requests and an
 appropriately configured tenacity retrying instance.</p>
+<p>The transport owns the composed transport, including one that you pass in
+yourself. Entering, exiting, or closing this transport does the same to the
+composed transport, in the same way that <code>httpx.AsyncClient</code> treats its transport.</p>
 
 
 
@@ -1427,6 +1621,50 @@ appropriately configured tenacity retrying instance.</p>
 <div class="doc doc-object doc-function">
 
 
+<h4 id="httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__aenter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enter the composed transport and return this transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Exit the composed transport, passing on any exception details.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="httpx_tenacity.AsyncTenaciousTransport.__init__" class="doc doc-heading">
             <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">AsyncRetrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncBaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
@@ -1434,6 +1672,28 @@ appropriately configured tenacity retrying instance.</p>
 
 
     <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.AsyncTenaciousTransport.aclose" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">aclose</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.AsyncTenaciousTransport.aclose" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Close the composed transport.</p>
 
 
     </div>
@@ -1463,6 +1723,8 @@ That transport is passed any additional keyword arguments.</p>
 <code>SmartRetryPolicy</code> retries requests when there are server-side issues
 and will either wait the time set in a Retry-After response header or use a
 random exponential backoff.</p>
+<p>The returned transport owns the underlying transport, including one passed in
+as <code>transport</code>, and closes it when it is closed.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
