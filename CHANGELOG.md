@@ -10,6 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added support for Python 3.15.
+- Added the `RetryPolicy` protocol and its default implementation
+  `SmartRetryPolicy`, which configures retries for both transports and also
+  sets the status codes and header that `smart_wait` reads. Custom policies
+  can use the exported `RetryingT` type variable in their `create()` signature.
+
+### Changed
+
+- **Breaking:** `TenaciousTransport.create()` and
+  `AsyncTenaciousTransport.create()` take a `policy` instead of the
+  `max_attempts`, `multiplier`, `max_wait_seconds`, `min_wait_seconds` and
+  `exponent_base` arguments. Replace
+  `TenaciousTransport.create(max_attempts=3)` with
+  `TenaciousTransport.create(policy=SmartRetryPolicy(max_attempts=3))`.
 
 ### Removed
 

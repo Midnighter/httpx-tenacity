@@ -23,13 +23,10 @@ from typing import TYPE_CHECKING, Unpack
 import httpx
 import tenacity
 
-from httpx_tenacity.retry_callback import is_server_side_issue
-from httpx_tenacity.wait import smart_wait
+from httpx_tenacity.retry_policy import RetryPolicy, SmartRetryPolicy
 
 
 if TYPE_CHECKING:  # pragma: no cover
-    from datetime import timedelta
-
     from .types import HTTPXHTTPTransportKeywordArguments
 
 logger = logging.getLogger(__name__)
@@ -58,11 +55,7 @@ class TenaciousTransport(httpx.BaseTransport):
     @classmethod
     def create(
         cls,
-        max_attempts: int = 5,
-        multiplier: float = 1,
-        max_wait_seconds: float | timedelta = 60,
-        min_wait_seconds: float | timedelta = 0.02,
-        exponent_base: float = 2,
+        policy: RetryPolicy | None = None,
         transport: httpx.BaseTransport | None = None,
         **kwargs: Unpack[HTTPXHTTPTransportKeywordArguments],
     ) -> TenaciousTransport:
@@ -73,16 +66,13 @@ class TenaciousTransport(httpx.BaseTransport):
         `httpx.HTTPTransport`.
         That transport is passed any additional keyword arguments.
 
-        The constructed transport retries requests when there are server-side issues
+        The retry policy creates the tenacity retrying instance. The default
+        `SmartRetryPolicy` retries requests when there are server-side issues
         and will either wait the time set in a Retry-After response header or use a
         random exponential backoff.
 
         Args:
-            max_attempts: Maximum number of attempts.
-            multiplier: Multiplier for the exponential backoff between retries.
-            max_wait_seconds: Maximum wait time between retries.
-            min_wait_seconds: Minimum wait time between retries.
-            exponent_base: The base for the exponential backoff.
+            policy: The retry policy. Defaults to `SmartRetryPolicy()`.
             transport: Pass a transport instance to handle requests instead of the
                 default one.
             **kwargs: Additional keyword arguments are used in the construction of an
@@ -92,19 +82,13 @@ class TenaciousTransport(httpx.BaseTransport):
             A default instance of the class created from the given arguments.
 
         """
+        if policy is None:
+            policy = SmartRetryPolicy()
         return cls(
-            retry=tenacity.Retrying(
-                retry=tenacity.retry_if_exception_type(httpx.RequestError)
-                | tenacity.retry_if_result(is_server_side_issue),
-                stop=tenacity.stop_after_attempt(max_attempts),
-                wait=smart_wait(
-                    multiplier=multiplier,
-                    max=max_wait_seconds,
-                    min=min_wait_seconds,
-                    exp_base=exponent_base,
-                ),
-                before_sleep=tenacity.before_sleep_log(logger, logging.DEBUG),  # type: ignore[invalid-argument-type]
-                reraise=True,
+            retry=policy.create(
+                tenacity.Retrying,
+                request_error=httpx.RequestError,
+                logger=logger,
             ),
             transport=httpx.HTTPTransport(**kwargs) if transport is None else transport,
         )

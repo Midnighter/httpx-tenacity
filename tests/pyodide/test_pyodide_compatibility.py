@@ -39,15 +39,14 @@ async def test_async_tenacious_transport(selenium_standalone):  # noqa: ARG001, 
     await micropip.install("tenacity")
 
     import tenacity
-    from httpx_tenacity import AsyncTenaciousTransport
+    from httpx_tenacity import AsyncTenaciousTransport, SmartRetryPolicy
 
     def handler(request: httpx.Request) -> httpx.Response:  # noqa: ARG001
         return httpx.Response(500, text="Server Error")
 
     async with httpx.AsyncClient(
         transport=AsyncTenaciousTransport.create(
-            max_attempts=3,
-            max_wait_seconds=0.1,
+            policy=SmartRetryPolicy(max_attempts=3, max_wait_seconds=0.1),
             transport=httpx.MockTransport(handler=handler),
         ),
     ) as client:

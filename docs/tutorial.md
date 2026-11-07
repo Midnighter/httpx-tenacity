@@ -29,27 +29,38 @@ client = httpx.Client(transport=transport)
 response = client.get("https://api.example.com/data")
 ```
 
-The `create()` method constructs a transport with sensible defaults:
+The `create()` method uses the default
+[`SmartRetryPolicy`][httpx_tenacity.SmartRetryPolicy], which has sensible
+defaults:
 
 -   Maximum 5 retry attempts
 -   Exponential backoff with base 2
 -   Minimum wait of 0.02 seconds between retries
 -   Maximum wait of 60 seconds between retries
+-   The wait time from the Retry-After header of 429 Too Many Requests responses
 
 ### Configuring Retry Behavior
 
-Adjust retry parameters when creating the transport:
+Pass a configured policy when creating the transport:
 
 ```python
+from httpx_tenacity import SmartRetryPolicy, TenaciousTransport
+
 transport = TenaciousTransport.create(
-    max_attempts=10,  # Try up to 10 times
-    multiplier=2,  # Exponential backoff multiplier
-    min_wait_seconds=0.1,  # Minimum 0.1 second between retries
-    max_wait_seconds=120,  # Maximum 2 minutes between retries
-    exponent_base=2,  # Base for exponential calculation
+    policy=SmartRetryPolicy(
+        max_attempts=10,  # Try up to 10 times
+        multiplier=2,  # Exponential backoff multiplier
+        min_wait_seconds=0.1,  # Minimum 0.1 second between retries
+        max_wait_seconds=120,  # Maximum 2 minutes between retries
+        exponent_base=2,  # Base for exponential calculation
+        status_code=(429, 503),  # Responses whose header sets the wait time
+        header="Retry-After",  # Header that holds the wait time in seconds
+    ),
 )
 client = httpx.Client(transport=transport)
 ```
+
+The same policy works for both the synchronous and the asynchronous transport.
 
 ### Passing Transport Configuration
 
@@ -57,7 +68,7 @@ Additional keyword arguments are passed to the underlying HTTPX transport:
 
 ```python
 transport = TenaciousTransport.create(
-    max_attempts=5,
+    policy=SmartRetryPolicy(max_attempts=5),
     verify=False,  # Disable SSL verification
     limits=httpx.Limits(max_connections=10),
 )
@@ -72,6 +83,40 @@ Retries are logged at DEBUG level. Enable debug logging to see retry activity:
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
+```
+
+### Custom Retry Policies
+
+Any object with a `create()` method that matches the
+[`RetryPolicy`][httpx_tenacity.RetryPolicy] protocol can replace the default
+policy. The transport calls it with the tenacity retrying class it needs, its
+HTTP client's request error, and its logger:
+
+```python
+import logging
+
+import tenacity
+from httpx_tenacity import RetryingT, TenaciousTransport
+
+
+class FixedRetryPolicy:
+    def create(
+        self,
+        retrying_class: type[RetryingT],
+        *,
+        request_error: type[Exception],
+        logger: logging.Logger,
+    ) -> RetryingT:
+        return retrying_class(
+            retry=tenacity.retry_if_exception_type(request_error),
+            stop=tenacity.stop_after_attempt(3),
+            wait=tenacity.wait_fixed(1),
+            before_sleep=tenacity.before_sleep_log(logger, logging.DEBUG),
+            reraise=True,
+        )
+
+
+transport = TenaciousTransport.create(policy=FixedRetryPolicy())
 ```
 
 ### Completely Custom Retry Logic

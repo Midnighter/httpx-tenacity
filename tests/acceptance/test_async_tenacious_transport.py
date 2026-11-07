@@ -20,7 +20,7 @@ import httpx
 import pytest
 from pytest_httpx import HTTPXMock
 
-from httpx_tenacity import AsyncTenaciousTransport
+from httpx_tenacity import AsyncTenaciousTransport, SmartRetryPolicy
 
 
 @pytest.mark.anyio
@@ -42,8 +42,7 @@ async def test_request_error_retrying():
 
     http_transport = FailingHTTPTransport()
     retry_transport = AsyncTenaciousTransport.create(
-        max_attempts=3,
-        max_wait_seconds=1e-3,
+        policy=SmartRetryPolicy(max_attempts=3, max_wait_seconds=1e-3),
         transport=http_transport,
     )
     async with httpx.AsyncClient(transport=retry_transport) as client:
@@ -93,7 +92,9 @@ async def test_too_many_requests_retrying(
 
     async with (
         httpx.AsyncClient(
-            transport=AsyncTenaciousTransport.create(max_attempts=3),
+            transport=AsyncTenaciousTransport.create(
+                policy=SmartRetryPolicy(max_attempts=3),
+            ),
         ) as client,
         anyio.create_task_group() as tg,
     ):
@@ -155,8 +156,7 @@ async def test_server_error_retrying(
     async with (
         httpx.AsyncClient(
             transport=AsyncTenaciousTransport.create(
-                max_attempts=12,
-                max_wait_seconds=1e-3,
+                policy=SmartRetryPolicy(max_attempts=12, max_wait_seconds=1e-3),
             ),
         ) as client,
         anyio.create_task_group() as tg,

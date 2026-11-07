@@ -16,5 +16,6 @@
 """Provide top level symbols."""
 
 from .types import HTTPXHTTPTransportKeywordArguments
+from .retry_policy import RetryingT, RetryPolicy, SmartRetryPolicy
 from .async_tenacious_transport import AsyncTenaciousTransport
 from .tenacious_transport import TenaciousTransport

@@ -18,6 +18,7 @@
 import httpx
 from pytest_httpx import HTTPXMock
 
+from httpx_tenacity import SmartRetryPolicy
 from httpx_tenacity.tenacious_transport import TenaciousTransport
 
 
@@ -39,8 +40,7 @@ def test_request_error_retrying():
 
     http_transport = FailingHTTPTransport()
     retry_transport = TenaciousTransport.create(
-        max_attempts=3,
-        max_wait_seconds=1e-3,
+        policy=SmartRetryPolicy(max_attempts=3, max_wait_seconds=1e-3),
         transport=http_transport,
     )
     with httpx.Client(transport=retry_transport) as client:
@@ -71,7 +71,7 @@ def test_too_many_requests_retrying(
     httpx_mock.add_response(url="http://example.com", status_code=httpx.codes.OK)
 
     with httpx.Client(
-        transport=TenaciousTransport.create(max_attempts=3),
+        transport=TenaciousTransport.create(policy=SmartRetryPolicy(max_attempts=3)),
     ) as client:
         client.get("http://example.com")
 
@@ -128,8 +128,7 @@ def test_server_error_retrying(
 
     with httpx.Client(
         transport=TenaciousTransport.create(
-            max_attempts=12,
-            max_wait_seconds=1e-3,
+            policy=SmartRetryPolicy(max_attempts=12, max_wait_seconds=1e-3),
         ),
     ) as client:
         client.get("http://example.com")
