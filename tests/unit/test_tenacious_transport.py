@@ -21,6 +21,23 @@ import tenacity
 from httpx_tenacity.tenacious_transport import TenaciousTransport
 
 
+class RecordingTransport(httpx.BaseTransport):
+    """Record the lifecycle calls that the transport receives."""
+
+    def __init__(self) -> None:
+        self.calls: list[object] = []
+
+    def close(self) -> None:
+        """Record closing the transport."""
+        self.calls.append("close")
+
+
+def make_transport() -> tuple[TenaciousTransport, RecordingTransport]:
+    """Create a tenacious transport that wraps a recording transport."""
+    inner = RecordingTransport()
+    return TenaciousTransport(retry=tenacity.Retrying(), transport=inner), inner
+
+
 def test_init():
     """Test that a synchronous tenacious transport can be initialized."""
     result = TenaciousTransport(
@@ -36,3 +53,12 @@ def test_create():
     result = TenaciousTransport.create()
 
     assert isinstance(result, TenaciousTransport)
+
+
+def test_close_closes_inner_transport():
+    """Test that closing the wrapper closes the inner transport."""
+    transport, inner = make_transport()
+
+    transport.close()
+
+    assert inner.calls == ["close"]

@@ -39,6 +39,10 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
     This transport consists of a composed transport for handling requests and an
     appropriately configured tenacity retrying instance.
 
+    The transport owns the composed transport, including one that you pass in
+    yourself. Closing this transport closes the composed transport, in the same way
+    that `httpx.AsyncClient` treats its transport.
+
     """
 
     def __init__(
@@ -70,6 +74,9 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
         `SmartRetryPolicy` retries requests when there are server-side issues
         and will either wait the time set in a Retry-After response header or use a
         random exponential backoff.
+
+        The returned transport owns the underlying transport, including one passed in
+        as `transport`, and closes it when it is closed.
 
         Args:
             policy: The retry policy. Defaults to `SmartRetryPolicy()`.
@@ -107,3 +114,7 @@ class AsyncTenaciousTransport(httpx.AsyncBaseTransport):
             if attempt.retry_state.outcome and not attempt.retry_state.outcome.failed:
                 attempt.retry_state.set_result(response)
         return response  # pyrefly: ignore[unbound-name]
+
+    async def aclose(self) -> None:
+        """Close the composed transport."""
+        await self._transport.aclose()

@@ -24,6 +24,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `TenaciousTransport.create(max_attempts=3)` with
   `TenaciousTransport.create(policy=SmartRetryPolicy(max_attempts=3))`.
 
+### Fixed
+
+- `TenaciousTransport` and `AsyncTenaciousTransport` now close the transport
+  they wrap. Previously, closing them, directly or via a client, never reached
+  the inner transport, so the connection pool of the default
+  `httpx.HTTPTransport` / `httpx.AsyncHTTPTransport` was never closed. The
+  wrapper owns the inner transport, including one passed to
+  `create(transport=...)`.
+
 ### Removed
 
 - Dropped support for Python 3.10.

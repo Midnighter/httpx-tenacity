@@ -16,9 +16,30 @@
 """Test the expected functionality of the asynchronous tenacious transport."""
 
 import httpx
+import pytest
 import tenacity
 
 from httpx_tenacity import AsyncTenaciousTransport
+
+
+class RecordingTransport(httpx.AsyncBaseTransport):
+    """Record the lifecycle calls that the transport receives."""
+
+    def __init__(self) -> None:
+        self.calls: list[object] = []
+
+    async def aclose(self) -> None:
+        """Record closing the transport."""
+        self.calls.append("aclose")
+
+
+def make_transport() -> tuple[AsyncTenaciousTransport, RecordingTransport]:
+    """Create a tenacious transport that wraps a recording transport."""
+    inner = RecordingTransport()
+    return AsyncTenaciousTransport(
+        retry=tenacity.AsyncRetrying(),
+        transport=inner,
+    ), inner
 
 
 def test_init():
@@ -36,3 +57,13 @@ def test_create():
     result = AsyncTenaciousTransport.create()
 
     assert isinstance(result, AsyncTenaciousTransport)
+
+
+@pytest.mark.anyio
+async def test_aclose_closes_inner_transport():
+    """Test that closing the wrapper closes the inner transport."""
+    transport, inner = make_transport()
+
+    await transport.aclose()
+
+    assert inner.calls == ["aclose"]
