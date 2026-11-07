@@ -1,7 +1,7 @@
 # ADR003 - Configure retries with a retry policy protocol
 
 - Date: 2026-11-07
-- Status: DRAFT
+- Status: ACCEPTED
 - Author: Moritz E. Beber
 
 ## Decision
@@ -30,6 +30,7 @@ The transports' `create()` factories take a `policy` that implements the `RetryP
 - Adopted because: retry logs keep each transport's logger name, because the transport passes its own logger.
 - Adopted because: new settings become policy fields with defaults instead of new arguments on every `create()`.
 - Adopted because: a custom policy only needs a matching `create()` method, which mypy and ty check structurally.
+- Adopted because: `SmartRetryPolicy` is a `NamedTuple`, the lightest-weight, truly immutable value object that Python provides.
 - Adopted despite: it is a breaking change to the signature of `create()`.
 - Adopted despite: the protocol is a public contract, so changing the parameters of its `create()` breaks third-party policies.
 - Adopted despite: custom policies need the `RetryingT` type variable to annotate `create()`, so it becomes public API.
