@@ -899,7 +899,7 @@
 <h1 id="adr003-configure-retries-with-a-retry-policy-protocol">ADR003 - Configure retries with a retry policy protocol<a class="headerlink" href="#adr003-configure-retries-with-a-retry-policy-protocol" title="Permanent link">&para;</a></h1>
 <ul>
 <li>Date: 2026-11-07</li>
-<li>Status: DRAFT</li>
+<li>Status: ACCEPTED</li>
 <li>Author: Moritz E. Beber</li>
 </ul>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">&para;</a></h2>
@@ -922,6 +922,7 @@
 <li>Adopted because: retry logs keep each transport's logger name, because the transport passes its own logger.</li>
 <li>Adopted because: new settings become policy fields with defaults instead of new arguments on every <code>create()</code>.</li>
 <li>Adopted because: a custom policy only needs a matching <code>create()</code> method, which mypy and ty check structurally.</li>
+<li>Adopted because: <code>SmartRetryPolicy</code> is a <code>NamedTuple</code>, the lightest-weight, truly immutable value object that Python provides.</li>
 <li>Adopted despite: it is a breaking change to the signature of <code>create()</code>.</li>
 <li>Adopted despite: the protocol is a public contract, so changing the parameters of its <code>create()</code> breaks third-party policies.</li>
 <li>Adopted despite: custom policies need the <code>RetryingT</code> type variable to annotate <code>create()</code>, so it becomes public API.</li>
