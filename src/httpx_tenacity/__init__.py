@@ -17,8 +17,8 @@
 Provide the retry policies that configure the tenacious transports.
 
 This package imports no HTTP client. The transports live in the integration
-packages, for example `httpx_tenacity.httpx` for HTTPX, and later
-`httpx_tenacity.httpx2` for HTTPX2. Each of them requires its own extra.
+packages, `httpx_tenacity.httpx` for HTTPX and `httpx_tenacity.httpx2` for
+HTTPX2. Each of them requires its own extra.
 
 """
 

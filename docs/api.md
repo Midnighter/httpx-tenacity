@@ -29,3 +29,19 @@ requires the `httpx` extra:
             - TenaciousTransport
             - AsyncTenaciousTransport
             - HTTPXHTTPTransportKeywordArguments
+
+## HTTPX2
+
+The following symbols are exposed to the user by `httpx_tenacity.httpx2`, which
+requires the `httpx2` extra:
+
+* [`TenaciousTransport`][httpx_tenacity.httpx2.TenaciousTransport]
+* [`AsyncTenaciousTransport`][httpx_tenacity.httpx2.AsyncTenaciousTransport]
+* [`HTTPX2HTTPTransportKeywordArguments`][httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments]
+
+::: httpx_tenacity.httpx2
+    options:
+        members:
+            - TenaciousTransport
+            - AsyncTenaciousTransport
+            - HTTPX2HTTPTransportKeywordArguments

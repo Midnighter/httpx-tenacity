@@ -17,11 +17,24 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, TypeAlias
 
 
 if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Mapping
+
+# Fallback for Pyodide HTTPX. See: https://github.com/Midnighter/httpx-tenacity/pull/10#issuecomment-3241566927
+SocketOption: TypeAlias = (
+    tuple[int, int, int]
+    | tuple[int, int, bytes | bytearray]
+    | tuple[int, int, None, int]
+)
+
+# We redefine the following type from the private `_types` modules of HTTPX and
+# HTTPX2 to avoid a dependency on them. It is identical for both clients. It would
+# be better if they exposed it publicly, but it is unlikely to change often. Thus we
+# consider it acceptable to redefine it here for type hinting purposes.
+CertTypes: TypeAlias = str | tuple[str, str] | tuple[str, str, str]
 
 
 class Response(Protocol):
