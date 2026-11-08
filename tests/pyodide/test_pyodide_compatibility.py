@@ -29,7 +29,7 @@ DISTRIBUTION_PATHS = [
     install_wheels=True,
     recurse_directories=False,
 )
-@run_in_pyodide(packages=["ssl", "micropip", "httpx"])
+@run_in_pyodide(packages=["micropip", "httpx"])
 async def test_async_tenacious_transport(selenium_standalone):  # noqa: ARG001, ANN001
     """Test that we can import and use an asynchronous tenacious transport."""
     import httpx
