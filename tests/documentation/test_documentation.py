@@ -21,10 +21,11 @@ Every Python code block of `README.md` and `docs/**/*.md` runs on its own as a c
 script in a fresh namespace, so each block has to restate its imports. Asynchronous
 examples run themselves with `anyio.run(main)`, which is why the test is synchronous.
 
-The `HTTPTransport` and `AsyncHTTPTransport` of HTTPX are replaced by factories that
-return a `MockTransport` answering 200, so that no example touches the network. The
-factories bind their arguments to the signature of the real transport, so that
-documented options which the real transport does not accept fail the test.
+The `HTTPTransport` and `AsyncHTTPTransport` of HTTPX and HTTPX2 are replaced by
+factories that return that client's `MockTransport` answering 200, so that no example
+touches the network. The factories bind their arguments to the signature of the real
+transport, so that documented options which the real transport does not accept fail the
+test.
 
 """
 
@@ -35,12 +36,14 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import httpx
+import httpx2
 import pytest
 from mktestdocs import grab_code_blocks
 
 
 if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Callable
+    from types import ModuleType
 
 
 ROOT_DIR = Path(__file__).parents[2]
@@ -56,28 +59,32 @@ EXAMPLES = [
 
 
 def _mock_transport_factory(
-    transport_class: type[httpx.BaseTransport | httpx.AsyncBaseTransport],
-) -> Callable[..., httpx.MockTransport]:
-    """Create a replacement for an HTTPX network transport that answers 200."""
+    client: ModuleType,
+    transport_class: type[object],
+) -> Callable[..., object]:
+    """Create a replacement for a network transport of a client that answers 200."""
     signature = inspect.signature(transport_class)
 
-    def factory(*args: object, **kwargs: object) -> httpx.MockTransport:
+    def factory(*args: object, **kwargs: object) -> object:
         # Binding the arguments rejects those that the real transport does not take.
         signature.bind(*args, **kwargs)
-        return httpx.MockTransport(lambda request: httpx.Response(200, request=request))
+        return client.MockTransport(
+            lambda request: client.Response(200, request=request),
+        )
 
     return factory
 
 
 @pytest.fixture
 def mock_network(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Replace the network transports of HTTPX with mock transports."""
-    for name in ("HTTPTransport", "AsyncHTTPTransport"):
-        monkeypatch.setattr(
-            httpx,
-            name,
-            _mock_transport_factory(getattr(httpx, name)),
-        )
+    """Replace the network transports of HTTPX and HTTPX2 with mock transports."""
+    for client in (httpx, httpx2):
+        for name in ("HTTPTransport", "AsyncHTTPTransport"):
+            monkeypatch.setattr(
+                client,
+                name,
+                _mock_transport_factory(client, getattr(client, name)),
+            )
 
 
 @pytest.mark.usefixtures("mock_network")

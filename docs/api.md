@@ -14,6 +14,24 @@ root:
             - SmartRetryPolicy
             - RetryingT
 
+The following helpers, which the default policy is built from, are client-independent
+as well. They are not exported by the package root, so import them from their own
+modules:
+
+* [`smart_wait`][httpx_tenacity.wait.smart_wait] from `httpx_tenacity.wait`
+* [`is_server_side_issue`][httpx_tenacity.retry_callback.is_server_side_issue] from
+  `httpx_tenacity.retry_callback`
+
+::: httpx_tenacity.wait
+    options:
+        members:
+            - smart_wait
+
+::: httpx_tenacity.retry_callback
+    options:
+        members:
+            - is_server_side_issue
+
 ## HTTPX
 
 The following symbols are exposed to the user by `httpx_tenacity.httpx`, which
