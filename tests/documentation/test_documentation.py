@@ -27,11 +27,16 @@ touches the network. The factories bind their arguments to the signature of the 
 transport, so that documented options which the real transport does not accept fail the
 test.
 
+Which HTTP client an example uses is explicit in its imports. Running the examples
+already catches one that mixes the clients, and `test_examples_exist_for_both_backends`
+additionally requires that the documents keep showing both clients.
+
 """
 
 from __future__ import annotations
 
 import inspect
+import re
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -56,6 +61,25 @@ EXAMPLES = [
     for document in DOCS
     for index, block in enumerate(grab_code_blocks(document.read_text()))
 ]
+# The clients whose examples each document must show. `README.md` is rendered by GitHub
+# without tabs, so it deliberately has only an HTTPX example and describes HTTPX2 in
+# prose.
+BACKENDS_PER_DOCUMENT = {
+    "README.md": {"httpx"},
+    "docs/index.md": {"httpx", "httpx2"},
+    "docs/tutorial.md": {"httpx", "httpx2"},
+}
+# `httpx2?` followed by a word boundary matches `httpx2` whole, so that an `httpx2`
+# import is never mistaken for `httpx`, and `httpx_tenacity` itself does not match.
+CLIENT_IMPORT = re.compile(
+    r"^\s*(?:import|from)\s+(?:httpx_tenacity\.)?(httpx2?)\b",
+    re.MULTILINE,
+)
+
+
+def _backends_used(block: str) -> set[str]:
+    """Return the HTTP clients that a code block imports."""
+    return set(CLIENT_IMPORT.findall(block))
 
 
 def _mock_transport_factory(
@@ -98,3 +122,26 @@ def test_document_examples_independently(block: str):
 
     """
     exec(block, {"__name__": "__main__"})  # noqa: S102
+
+
+@pytest.mark.parametrize(
+    ("document", "expected"),
+    BACKENDS_PER_DOCUMENT.items(),
+    ids=BACKENDS_PER_DOCUMENT,
+)
+def test_examples_exist_for_both_backends(document: str, expected: set[str]):
+    """
+    Require examples for each HTTP client in the listed documents.
+
+    Only blocks that import a single client count, so that an example which shows both
+    clients together cannot stand in for the missing example of either.
+
+    """
+    shown: set[str] = set()
+
+    for block in grab_code_blocks((ROOT_DIR / document).read_text()):
+        used = _backends_used(block)
+        if len(used) == 1:
+            shown |= used
+
+    assert shown == expected
