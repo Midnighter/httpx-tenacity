@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Moritz E. Beber
+# Copyright (c) 2026 Moritz E. Beber
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -13,9 +13,13 @@
 # the License.
 
 
-"""Define test suite-level fixtures."""
+"""Define the fixtures shared by the unit and acceptance tests."""
+
+from __future__ import annotations
 
 import pytest
+
+from httpx_tenacity_test_types import HTTPBackend
 
 
 @pytest.fixture(
@@ -27,3 +31,20 @@ import pytest
 def anyio_backend(request: pytest.FixtureRequest) -> tuple[str, dict[str, bool]]:
     """Set the anyio event loop."""
     return request.param
+
+
+@pytest.fixture(
+    params=[
+        pytest.param("httpx", id="httpx"),
+        pytest.param("httpx2", id="httpx2"),
+    ],
+)
+def http(request: pytest.FixtureRequest) -> HTTPBackend:
+    """
+    Provide each HTTP backend together with its integration.
+
+    The imports happen here and not at collection time, so that a missing backend
+    fails every test that needs it instead of being skipped.
+
+    """
+    return HTTPBackend.create(request.param)

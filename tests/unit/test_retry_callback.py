@@ -15,10 +15,18 @@
 
 """Test the expected functionality of the custom retry callback functions."""
 
-import httpx
+from __future__ import annotations
+
+from http import HTTPStatus
+from typing import TYPE_CHECKING
+
 import pytest
 
 from httpx_tenacity.retry_callback import is_server_side_issue
+
+
+if TYPE_CHECKING:  # pragma: no cover
+    from httpx_tenacity_test_types import HTTPBackend
 
 
 @pytest.mark.parametrize(
@@ -28,12 +36,14 @@ from httpx_tenacity.retry_callback import is_server_side_issue
         *[
             (code, False)
             for code in range(400, 500)
-            if code != httpx.codes.TOO_MANY_REQUESTS
+            if code != HTTPStatus.TOO_MANY_REQUESTS
         ],
-        (httpx.codes.TOO_MANY_REQUESTS, True),
+        (HTTPStatus.TOO_MANY_REQUESTS, True),
         *[(code, True) for code in range(500, 600)],
     ],
 )
-def test_is_server_side_issue(status_code: int, expected: bool):
+def test_is_server_side_issue(http: HTTPBackend, status_code: int, expected: bool):
     """Test that the callback returns true for server side issues."""
-    assert is_server_side_issue(httpx.Response(status_code=status_code)) is expected
+    response = http.client.Response(status_code=status_code)
+
+    assert is_server_side_issue(response) is expected

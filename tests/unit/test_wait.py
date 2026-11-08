@@ -15,13 +15,20 @@
 
 """Test the expected functionality of the custom wait strategies."""
 
-import httpx
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import tenacity
 
 from httpx_tenacity.wait import smart_wait
 
 
-def test_smart_wait_with_retry_after_header():
+if TYPE_CHECKING:  # pragma: no cover
+    from httpx_tenacity_test_types import HTTPBackend
+
+
+def test_smart_wait_with_retry_after_header(http: HTTPBackend):
     """Test that the smart wait strategy returns the value from the response header."""
     state = tenacity.RetryCallState(
         tenacity.Retrying(),
@@ -30,8 +37,8 @@ def test_smart_wait_with_retry_after_header():
         kwargs=None,
     )
     state.set_result(
-        httpx.Response(
-            status_code=httpx.codes.TOO_MANY_REQUESTS,
+        http.client.Response(
+            status_code=http.client.codes.TOO_MANY_REQUESTS,
             headers={"Retry-After": "104"},
         ),
     )
@@ -40,7 +47,7 @@ def test_smart_wait_with_retry_after_header():
     assert strategy(state) == 104.0
 
 
-def test_smart_wait_without_retry_after_header():
+def test_smart_wait_without_retry_after_header(http: HTTPBackend):
     """Test that the smart wait strategy returns a random exponential value."""
     state = tenacity.RetryCallState(
         tenacity.Retrying(),
@@ -48,7 +55,7 @@ def test_smart_wait_without_retry_after_header():
         args=None,
         kwargs=None,
     )
-    state.set_result(httpx.Response(status_code=httpx.codes.OK))
+    state.set_result(http.client.Response(status_code=http.client.codes.OK))
     strategy = smart_wait(min=0, max=60)
     result = [strategy(state) for _ in range(100)]
 

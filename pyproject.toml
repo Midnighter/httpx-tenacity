@@ -58,7 +58,7 @@ docs = [
     "mkdocs-awesome-pages-plugin ~=2.9",
     "mike ~=2.1",
 ]
-tests = ["anyio", "pytest", "pytest-cov", "pytest-httpx", "pytest-raises"]
+tests = ["anyio", "pytest", "pytest-cov", "pytest-raises"]
 
 ################################################################################
 # Tool Configuration
@@ -78,6 +78,9 @@ source = "vcs"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Shared test helpers. Replace with a Hatch workspace member once hatch-pip-compile
+# supports workspaces.
+pythonpath = ["test-helpers"]
 markers = ["raises"]
 
 [tool.coverage.paths]
@@ -121,6 +124,9 @@ exclude = ["src/httpx_tenacity/_version.py"]
     "PLR2004", # Magic numbers are okay in tests.
     "FBT001",  # Boolean positional arguments are fine in tests.
 ]
+"test-helpers/*.py" = [
+    "INP001", # The helpers are a plain module on the pytest `pythonpath`, not a package.
+]
 "tests/pyodide/**/*.py" = [
     "PLC0415", # We explicitly need imports inside function and ignore the '`import` should be at the top-level of a file' rule.
     "I001",    # 'Import block is un-sorted or un-formatted' ignored because we may have to import in a particular, not-alphabetical order.
@@ -128,7 +134,7 @@ exclude = ["src/httpx_tenacity/_version.py"]
 
 [tool.ruff.lint.isort]
 case-sensitive = true
-known-first-party = ["src", "httpx_tenacity"]
+known-first-party = ["src", "httpx_tenacity", "httpx_tenacity_test_types"]
 lines-after-imports = 2
 
 [tool.ruff.lint.pylint]
@@ -187,7 +193,7 @@ template = "no-install"
 dependency-groups = ["style"]
 
 [tool.hatch.envs.style.scripts]
-docstrings = ["pydoclint src", "pydoclint tests"]
+docstrings = ["pydoclint src", "pydoclint tests", "pydoclint test-helpers"]
 code = "ruff check {args}"
 format = "ruff format {args}"
 fix = "ruff check --fix {args}"
