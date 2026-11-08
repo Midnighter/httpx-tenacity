@@ -13,7 +13,7 @@ requires = ["hatchling", "hatch-vcs"]
 [project]
 name = "httpx-tenacity"
 dynamic = ["version"]
-description = "A lightweight package that provides tenacious (retrying) httpx transports."
+description = "A lightweight package that provides tenacious (retrying) httpx and httpx2 transports."
 authors = [{ name = "Moritz E. Beber", email = "midnighter@posteo.net" }]
 license = "Apache-2.0"
 readme = { "file" = "README.md", "content-type" = "text/markdown" }
@@ -35,11 +35,8 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP",
     "Typing :: Typed",
 ]
-keywords = ["httpx", "tenacity", "retry"]
-dependencies = [
-    "httpx ~=0.25",
-    "tenacity ~=9.1",
-]
+keywords = ["httpx", "httpx2", "tenacity", "retry"]
+dependencies = ["tenacity ~=9.1"]
 
 [project.urls]
 Homepage = "https://github.com/Midnighter/httpx-tenacity"
@@ -47,6 +44,10 @@ Documentation = "https://midnighter.github.io/httpx-tenacity/"
 "Source Code" = "https://github.com/Midnighter/httpx-tenacity"
 "Bug Tracker" = "https://github.com/Midnighter/httpx-tenacity/issues"
 Download = "https://pypi.org/project/httpx-tenacity/#files"
+
+[project.optional-dependencies]
+httpx = ["httpx ~=0.25"]
+httpx2 = ["httpx2 ~=2.10"]
 
 [dependency-groups]
 style = ["pydoclint", "ruff"]
@@ -165,6 +166,7 @@ pip-compile-constraint = "dev"
 pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
+features = ["httpx", "httpx2"]
 
 [tool.hatch.envs.no-install]
 description = """A base environment for use cases that do not install the project."""

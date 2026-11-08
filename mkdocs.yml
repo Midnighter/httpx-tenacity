@@ -1,5 +1,5 @@
 site_name: HTTPX Tenacity
-site_description: A lightweight package that provides tenacious (retrying) httpx transports.
+site_description: A lightweight package that provides tenacious (retrying) httpx and httpx2 transports.
 site_author: Moritz E. Beber
 site_url: https://midnighter.github.io/httpx-tenacity/
 
