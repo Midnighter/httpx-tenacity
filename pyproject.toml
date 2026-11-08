@@ -89,6 +89,7 @@ source = ["src/httpx_tenacity", "*/site-packages/httpx_tenacity"]
 [tool.coverage.run]
 branch = true
 parallel = true
+patch = ["subprocess"]
 omit = ["src/httpx_tenacity/_version.py"]
 
 [tool.coverage.report]
