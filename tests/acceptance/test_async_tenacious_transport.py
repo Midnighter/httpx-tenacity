@@ -20,7 +20,8 @@ import httpx
 import pytest
 from pytest_httpx import HTTPXMock
 
-from httpx_tenacity import AsyncTenaciousTransport, SmartRetryPolicy
+from httpx_tenacity import SmartRetryPolicy
+from httpx_tenacity.httpx import AsyncTenaciousTransport
 
 
 @pytest.mark.anyio

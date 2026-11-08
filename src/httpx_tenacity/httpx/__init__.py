@@ -13,4 +13,25 @@
 # the License.
 
 
-"""Provide the HTTPX integration."""
+"""
+Provide the HTTPX integration.
+
+Importing this package requires the `httpx` extra, for example
+`pip install "httpx-tenacity[httpx]"`.
+
+"""
+
+try:
+    import httpx
+except ModuleNotFoundError as error:
+    if error.name != "httpx":
+        raise
+    msg = (
+        "The HTTPX integration requires the 'httpx' package. Install it with "
+        "`pip install 'httpx-tenacity[httpx]'`."
+    )
+    raise ModuleNotFoundError(msg, name="httpx") from error
+
+from .types import HTTPXHTTPTransportKeywordArguments
+from .async_tenacious_transport import AsyncTenaciousTransport
+from .tenacious_transport import TenaciousTransport

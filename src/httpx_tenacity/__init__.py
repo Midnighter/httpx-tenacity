@@ -13,9 +13,13 @@
 # the License.
 
 
-"""Provide top level symbols."""
+"""
+Provide the retry policies that configure the tenacious transports.
 
-from .httpx.types import HTTPXHTTPTransportKeywordArguments
+This package imports no HTTP client. The transports live in the integration
+packages, for example `httpx_tenacity.httpx` for HTTPX, and later
+`httpx_tenacity.httpx2` for HTTPX2. Each of them requires its own extra.
+
+"""
+
 from .retry_policy import RetryingT, RetryPolicy, SmartRetryPolicy
-from .httpx.async_tenacious_transport import AsyncTenaciousTransport
-from .httpx.tenacious_transport import TenaciousTransport

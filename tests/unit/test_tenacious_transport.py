@@ -22,7 +22,7 @@ import httpx
 import pytest
 import tenacity
 
-from httpx_tenacity.httpx.tenacious_transport import TenaciousTransport
+from httpx_tenacity.httpx import TenaciousTransport
 
 
 class RecordingTransport(httpx.BaseTransport):

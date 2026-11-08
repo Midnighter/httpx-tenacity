@@ -3,9 +3,9 @@
 httpx-tenacity provides two transport classes that add automatic retry logic to
 HTTPX:
 
--   [`TenaciousTransport`][httpx_tenacity.TenaciousTransport]: Synchronous
+-   [`TenaciousTransport`][httpx_tenacity.httpx.TenaciousTransport]: Synchronous
     transport for blocking requests
--   [`AsyncTenaciousTransport`][httpx_tenacity.AsyncTenaciousTransport]:
+-   [`AsyncTenaciousTransport`][httpx_tenacity.httpx.AsyncTenaciousTransport]:
     Asynchronous transport for async/await requests
 
 Both transports, when created with the default factory, automatically retry
@@ -21,7 +21,7 @@ Create a client with automatic retry logic:
 
 ```python
 import httpx
-from httpx_tenacity import TenaciousTransport
+from httpx_tenacity.httpx import TenaciousTransport
 
 transport = TenaciousTransport.create()
 client = httpx.Client(transport=transport)
@@ -45,7 +45,8 @@ Pass a configured policy when creating the transport:
 
 ```python
 import httpx
-from httpx_tenacity import SmartRetryPolicy, TenaciousTransport
+from httpx_tenacity import SmartRetryPolicy
+from httpx_tenacity.httpx import TenaciousTransport
 
 transport = TenaciousTransport.create(
     policy=SmartRetryPolicy(
@@ -69,7 +70,8 @@ Additional keyword arguments are passed to the underlying HTTPX transport:
 
 ```python
 import httpx
-from httpx_tenacity import SmartRetryPolicy, TenaciousTransport
+from httpx_tenacity import SmartRetryPolicy
+from httpx_tenacity.httpx import TenaciousTransport
 
 transport = TenaciousTransport.create(
     policy=SmartRetryPolicy(max_attempts=5),
@@ -100,7 +102,8 @@ HTTP client's request error, and its logger:
 import logging
 
 import tenacity
-from httpx_tenacity import RetryingT, TenaciousTransport
+from httpx_tenacity import RetryingT
+from httpx_tenacity.httpx import TenaciousTransport
 
 
 class FixedRetryPolicy:
@@ -131,7 +134,7 @@ For full control over retry behavior, provide a custom tenacity
 ```python
 import httpx
 from tenacity import Retrying, stop_after_attempt, wait_fixed
-from httpx_tenacity import TenaciousTransport
+from httpx_tenacity.httpx import TenaciousTransport
 
 transport = TenaciousTransport(
     retry=Retrying(
@@ -152,7 +155,7 @@ concurrent requests over the same transport instance.
 ```python
 import anyio
 import httpx
-from httpx_tenacity import AsyncTenaciousTransport
+from httpx_tenacity.httpx import AsyncTenaciousTransport
 
 
 async def main():

@@ -21,12 +21,8 @@ import httpx
 import pytest
 import tenacity
 
-from httpx_tenacity import (
-    AsyncTenaciousTransport,
-    RetryingT,
-    SmartRetryPolicy,
-    TenaciousTransport,
-)
+from httpx_tenacity import RetryingT, SmartRetryPolicy
+from httpx_tenacity.httpx import AsyncTenaciousTransport, TenaciousTransport
 
 
 logger = logging.getLogger(__name__)
