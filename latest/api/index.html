@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A lightweight package that provides tenacious (retrying) httpx transports.">
+        <meta name="description" content="A lightweight package that provides tenacious (retrying) httpx and httpx2 transports.">
       
       
         <meta name="author" content="Moritz E. Beber">
@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#httpx_tenacity" class="md-skip">
+        <a href="#retry-policies" class="md-skip">
           Skip to content
         </a>
       
@@ -378,6 +378,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#retry-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#httpx_tenacity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -397,172 +408,6 @@
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TenaciousTransport
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TenaciousTransport">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.__enter__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __enter__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.__exit__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __exit__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.close" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        close
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        create
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.handle_request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        handle_request
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AsyncTenaciousTransport
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="AsyncTenaciousTransport">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aenter__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aexit__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.aclose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        aclose
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        create
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.handle_async_request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        handle_async_request
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -704,6 +549,754 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wait
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="wait">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait.smart_wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        smart_wait
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="smart_wait">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait.smart_wait.__call__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __call__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait.smart_wait.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.retry_callback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retry_callback
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="retry_callback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.retry_callback.is_server_side_issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_server_side_issue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPX
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        httpx
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="httpx">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.__enter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __enter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.__exit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __exit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        close
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.handle_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncTenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AsyncTenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aenter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aexit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.handle_async_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_async_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPXHTTPTransportKeywordArguments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTPXHTTPTransportKeywordArguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.cert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.local_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        local_address
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.socket_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        socket_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.trust_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trust_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.uds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPX2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        httpx2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="httpx2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.__enter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __enter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.__exit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __exit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        close
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.handle_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncTenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AsyncTenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aenter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aexit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.handle_async_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_async_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPX2HTTPTransportKeywordArguments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTPX2HTTPTransportKeywordArguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.cert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.local_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        local_address
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.socket_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        socket_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.trust_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trust_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.uds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -723,6 +1316,8 @@
       
         
           
+        
+      
         
       
         
@@ -864,6 +1459,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/adr004-provide-one-integration-per-http-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR004 - Provide one integration per HTTP client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -896,6 +1519,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#retry-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#httpx_tenacity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -915,172 +1549,6 @@
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TenaciousTransport
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TenaciousTransport">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.__enter__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __enter__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.__exit__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __exit__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.close" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        close
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        create
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.TenaciousTransport.handle_request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        handle_request
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AsyncTenaciousTransport
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="AsyncTenaciousTransport">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aenter__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aexit__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.aclose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        aclose
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        create
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#httpx_tenacity.AsyncTenaciousTransport.handle_async_request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        handle_async_request
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -1222,6 +1690,754 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wait
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="wait">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait.smart_wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        smart_wait
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="smart_wait">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait.smart_wait.__call__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __call__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.wait.smart_wait.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.retry_callback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retry_callback
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="retry_callback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.retry_callback.is_server_side_issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_server_side_issue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPX
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        httpx
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="httpx">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.__enter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __enter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.__exit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __exit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        close
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.TenaciousTransport.handle_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncTenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AsyncTenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aenter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aexit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.handle_async_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_async_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPXHTTPTransportKeywordArguments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTPXHTTPTransportKeywordArguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.cert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.local_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        local_address
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.socket_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        socket_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.trust_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trust_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.uds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPX2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        httpx2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="httpx2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.__enter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __enter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.__exit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __exit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        close
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.TenaciousTransport.handle_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncTenaciousTransport
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AsyncTenaciousTransport">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__aenter__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aenter__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__aexit__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __aexit__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.handle_async_request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        handle_async_request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPX2HTTPTransportKeywordArguments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTPX2HTTPTransportKeywordArguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.cert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        http2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.local_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        local_address
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.socket_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        socket_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.trust_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trust_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.uds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1244,10 +2460,10 @@
 
   <h1>Reference API</h1>
 
-<p>The following symbols are exposed to the user:</p>
+<h2 id="retry-policies">Retry policies<a class="headerlink" href="#retry-policies" title="Permanent link">&para;</a></h2>
+<p>The following symbols are exposed to the user by the client-independent package
+root:</p>
 <ul>
-<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.TenaciousTransport"><code>TenaciousTransport</code></a></li>
-<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.AsyncTenaciousTransport"><code>AsyncTenaciousTransport</code></a></li>
 <li><a class="autorefs autorefs-internal" href="#httpx_tenacity.RetryPolicy"><code>RetryPolicy</code></a></li>
 <li><a class="autorefs autorefs-internal" href="#httpx_tenacity.SmartRetryPolicy"><code>SmartRetryPolicy</code></a></li>
 <li><a class="autorefs autorefs-internal" title="RetryingT = TypeVar('RetryingT', tenacity.Retrying, tenacity.AsyncRetrying)
@@ -1270,7 +2486,10 @@
 
     <div class="doc doc-contents first">
 
-        <p>Provide top level symbols.</p>
+        <p>Provide the retry policies that configure the tenacious transports.</p>
+<p>This package imports no HTTP client. The transports live in the integration
+packages, <code>httpx_tenacity.httpx</code> for HTTPX and <code>httpx_tenacity.httpx2</code> for
+HTTPX2. Each of them requires its own extra.</p>
 
 
 
@@ -1312,542 +2531,6 @@
 </div>
 
 
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="httpx_tenacity.TenaciousTransport" class="doc doc-heading">
-            <code>TenaciousTransport</code>
-
-
-<a href="#httpx_tenacity.TenaciousTransport" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="httpx.BaseTransport">BaseTransport</span></code></p>
-
-
-
-        <p>Define the synchronous tenacious (retrying) transport.</p>
-<p>This transport consists of a composed transport for handling requests and an
-appropriately configured tenacity retrying instance.</p>
-<p>The transport owns the composed transport, including one that you pass in
-yourself. Entering, exiting, or closing this transport does the same to the
-composed transport, in the same way that <code>httpx.Client</code> treats its transport.</p>
-
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.TenaciousTransport.__enter__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__enter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
-
-<a href="#httpx_tenacity.TenaciousTransport.__enter__" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Enter the composed transport and return this transport.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.TenaciousTransport.__exit__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-<a href="#httpx_tenacity.TenaciousTransport.__exit__" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Exit the composed transport, passing on any exception details.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.TenaciousTransport.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">Retrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">BaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-<a href="#httpx_tenacity.TenaciousTransport.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.TenaciousTransport.close" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-<a href="#httpx_tenacity.TenaciousTransport.close" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Close the composed transport.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.TenaciousTransport.create" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="p">:</span> <span class="n">RetryPolicy</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">BaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TenaciousTransport</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#httpx_tenacity.TenaciousTransport.create" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Create an instance of a synchronous tenacious (retrying) transport.</p>
-<p>This factory method constructs the instance with an underlying
-<code>httpx.HTTPTransport</code>.
-That transport is passed any additional keyword arguments.</p>
-<p>The retry policy creates the tenacity retrying instance. The default
-<code>SmartRetryPolicy</code> retries requests when there are server-side issues
-and will either wait the time set in a Retry-After response header or use a
-random exponential backoff.</p>
-<p>The returned transport owns the underlying transport, including one passed in
-as <code>transport</code>, and closes it when it is closed.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>policy</code>
-            </td>
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="RetryPolicy (httpx_tenacity.retry_policy.RetryPolicy)" href="#httpx_tenacity.RetryPolicy">RetryPolicy</a> | None</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The retry policy. Defaults to <code>SmartRetryPolicy()</code>.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>transport</code>
-            </td>
-            <td>
-                  <code><span title="httpx.BaseTransport">BaseTransport</span> | None</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Pass a transport instance to handle requests instead of the
-default one.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>**kwargs</code>
-            </td>
-            <td>
-                  <code><span title="typing.Unpack">Unpack</span>[<span title="httpx_tenacity.types.HTTPXHTTPTransportKeywordArguments">HTTPXHTTPTransportKeywordArguments</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Additional keyword arguments are used in the construction of an
-<code>httpx.HTTPTransport</code>.</p>
-              </div>
-            </td>
-            <td>
-                  <code>{}</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="TenaciousTransport (httpx_tenacity.tenacious_transport.TenaciousTransport)" href="#httpx_tenacity.TenaciousTransport">TenaciousTransport</a></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>A default instance of the class created from the given arguments.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.TenaciousTransport.handle_request" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span></code>
-
-<a href="#httpx_tenacity.TenaciousTransport.handle_request" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Handle a synchronous request with retrying.</p>
-
-
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="httpx_tenacity.AsyncTenaciousTransport" class="doc doc-heading">
-            <code>AsyncTenaciousTransport</code>
-
-
-<a href="#httpx_tenacity.AsyncTenaciousTransport" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="httpx.AsyncBaseTransport">AsyncBaseTransport</span></code></p>
-
-
-
-        <p>Define the asynchronous tenacious (retrying) transport.</p>
-<p>This transport consists of a composed transport for handling requests and an
-appropriately configured tenacity retrying instance.</p>
-<p>The transport owns the composed transport, including one that you pass in
-yourself. Entering, exiting, or closing this transport does the same to the
-composed transport, in the same way that <code>httpx.AsyncClient</code> treats its transport.</p>
-
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__aenter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
-  </span>
-
-<a href="#httpx_tenacity.AsyncTenaciousTransport.__aenter__" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Enter the composed transport and return this transport.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
-  </span>
-
-<a href="#httpx_tenacity.AsyncTenaciousTransport.__aexit__" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Exit the composed transport, passing on any exception details.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.AsyncTenaciousTransport.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">AsyncRetrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncBaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-<a href="#httpx_tenacity.AsyncTenaciousTransport.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.AsyncTenaciousTransport.aclose" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">aclose</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
-  </span>
-
-<a href="#httpx_tenacity.AsyncTenaciousTransport.aclose" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Close the composed transport.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.AsyncTenaciousTransport.create" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="p">:</span> <span class="n">RetryPolicy</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncBaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncTenaciousTransport</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#httpx_tenacity.AsyncTenaciousTransport.create" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Create an instance of an asynchronous tenacious (retrying) transport.</p>
-<p>This factory method constructs the instance with an underlying
-<code>httpx.AsyncHTTPTransport</code>.
-That transport is passed any additional keyword arguments.</p>
-<p>The retry policy creates the tenacity retrying instance. The default
-<code>SmartRetryPolicy</code> retries requests when there are server-side issues
-and will either wait the time set in a Retry-After response header or use a
-random exponential backoff.</p>
-<p>The returned transport owns the underlying transport, including one passed in
-as <code>transport</code>, and closes it when it is closed.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>policy</code>
-            </td>
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="RetryPolicy (httpx_tenacity.retry_policy.RetryPolicy)" href="#httpx_tenacity.RetryPolicy">RetryPolicy</a> | None</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The retry policy. Defaults to <code>SmartRetryPolicy()</code>.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>transport</code>
-            </td>
-            <td>
-                  <code><span title="httpx.AsyncBaseTransport">AsyncBaseTransport</span> | None</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Pass an asynchronous transport instance to handle requests
-instead of the default one.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>**kwargs</code>
-            </td>
-            <td>
-                  <code><span title="typing.Unpack">Unpack</span>[<span title="httpx_tenacity.types.HTTPXHTTPTransportKeywordArguments">HTTPXHTTPTransportKeywordArguments</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Additional keyword arguments are used in the construction of an
-<code>httpx.AsyncHTTPTransport</code>.</p>
-              </div>
-            </td>
-            <td>
-                  <code>{}</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="AsyncTenaciousTransport (httpx_tenacity.async_tenacious_transport.AsyncTenaciousTransport)" href="#httpx_tenacity.AsyncTenaciousTransport">AsyncTenaciousTransport</a></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>A default instance of the class created from the given arguments.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="httpx_tenacity.AsyncTenaciousTransport.handle_async_request" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">handle_async_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
-  </span>
-
-<a href="#httpx_tenacity.AsyncTenaciousTransport.handle_async_request" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Handle an asynchronous request with retrying.</p>
-
-
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-class">
 
@@ -2457,6 +3140,1921 @@ as <code>httpx.RequestError</code>.</p>
 
     </div>
 
+</div><p>The following helpers, which the default policy is built from, are client-independent
+as well. They are not exported by the package root, so import them from their own
+modules:</p>
+<ul>
+<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.wait.smart_wait"><code>smart_wait</code></a> from <code>httpx_tenacity.wait</code></li>
+<li><a class="autorefs autorefs-internal" title="is_server_side_issue(response: Response) -> bool" href="#httpx_tenacity.retry_callback.is_server_side_issue"><code>is_server_side_issue</code></a> from
+  <code>httpx_tenacity.retry_callback</code></li>
+</ul>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="httpx_tenacity.wait" class="doc doc-heading">
+            <code>httpx_tenacity.wait</code>
+
+
+<a href="#httpx_tenacity.wait" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Provide custom wait functions.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="httpx_tenacity.wait.smart_wait" class="doc doc-heading">
+            <code>smart_wait</code>
+
+
+<a href="#httpx_tenacity.wait.smart_wait" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="tenacity.wait.wait_random_exponential">wait_random_exponential</span></code></p>
+
+
+
+        <p>Define a wait strategy that smartly backs-off.</p>
+<p>This strategy first checks HTTP responses for an expected status code (by
+default 429) that indicates that the server is busy. If the status code
+matches, it checks the response header (by default  'Retry-After') for a
+wait time indication. Otherwise, it uses random exponential backoff.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.wait.smart_wait.__call__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__call__</span><span class="p">(</span><span class="n">retry_state</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">RetryCallState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span></code>
+
+<a href="#httpx_tenacity.wait.smart_wait.__call__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a wait time in seconds based on response headers or retry state.</p>
+<p>When we have a successful outcome, i.e., we received an HTTP response
+without encountering an exception, and the HTTP status code of the
+response matches the specified status code, check if the response header
+indicates a wait time; otherwise use the random exponential strategy to
+determine the wait time.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.wait.smart_wait.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">exp_base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">min</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">TOO_MANY_REQUESTS</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Retry-After'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.wait.smart_wait.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="httpx_tenacity.retry_callback" class="doc doc-heading">
+            <code>httpx_tenacity.retry_callback</code>
+
+
+<a href="#httpx_tenacity.retry_callback" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Provide custom retry callback functions.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="httpx_tenacity.retry_callback.is_server_side_issue" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_server_side_issue</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#httpx_tenacity.retry_callback.is_server_side_issue" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return whether the response indicates a server side issue.</p>
+<p>A server side issue is defined as either an HTTP server error code (500 - 599) or
+too many requests (429).</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="httpx">HTTPX<a class="headerlink" href="#httpx" title="Permanent link">&para;</a></h2>
+<p>The following symbols are exposed to the user by <code>httpx_tenacity.httpx</code>, which
+requires the <code>httpx</code> extra:</p>
+<ul>
+<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.httpx.TenaciousTransport"><code>TenaciousTransport</code></a></li>
+<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.httpx.AsyncTenaciousTransport"><code>AsyncTenaciousTransport</code></a></li>
+<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments"><code>HTTPXHTTPTransportKeywordArguments</code></a></li>
+</ul>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="httpx_tenacity.httpx" class="doc doc-heading">
+            <code>httpx_tenacity.httpx</code>
+
+
+<a href="#httpx_tenacity.httpx" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Provide the HTTPX integration.</p>
+<p>Importing this package requires the <code>httpx</code> extra, for example
+<code>pip install "httpx-tenacity[httpx]"</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="httpx_tenacity.httpx.TenaciousTransport" class="doc doc-heading">
+            <code>TenaciousTransport</code>
+
+
+<a href="#httpx_tenacity.httpx.TenaciousTransport" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="httpx.BaseTransport">BaseTransport</span></code></p>
+
+
+
+        <p>Define the synchronous tenacious (retrying) transport.</p>
+<p>This transport consists of a composed transport for handling requests and an
+appropriately configured tenacity retrying instance.</p>
+<p>The transport owns the composed transport, including one that you pass in
+yourself. Entering, exiting, or closing this transport does the same to the
+composed transport, in the same way that <code>httpx.Client</code> treats its transport.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.TenaciousTransport.__enter__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__enter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
+
+<a href="#httpx_tenacity.httpx.TenaciousTransport.__enter__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enter the composed transport and return this transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.TenaciousTransport.__exit__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx.TenaciousTransport.__exit__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Exit the composed transport, passing on any exception details.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.TenaciousTransport.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">Retrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">BaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx.TenaciousTransport.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.TenaciousTransport.close" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx.TenaciousTransport.close" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Close the composed transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.TenaciousTransport.create" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="p">:</span> <span class="n">RetryPolicy</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">BaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TenaciousTransport</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.TenaciousTransport.create" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance of a synchronous tenacious (retrying) transport.</p>
+<p>This factory method constructs the instance with an underlying
+<code>httpx.HTTPTransport</code>.
+That transport is passed any additional keyword arguments.</p>
+<p>The retry policy creates the tenacity retrying instance. The default
+<code>SmartRetryPolicy</code> retries requests when there are server-side issues
+and will either wait the time set in a Retry-After response header or use a
+random exponential backoff.</p>
+<p>The returned transport owns the underlying transport, including one passed in
+as <code>transport</code>, and closes it when it is closed.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>policy</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="RetryPolicy (httpx_tenacity.retry_policy.RetryPolicy)" href="#httpx_tenacity.RetryPolicy">RetryPolicy</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retry policy. Defaults to <code>SmartRetryPolicy()</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>transport</code>
+            </td>
+            <td>
+                  <code><span title="httpx.BaseTransport">BaseTransport</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pass a transport instance to handle requests instead of the
+default one.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>**kwargs</code>
+            </td>
+            <td>
+                  <code><span title="typing.Unpack">Unpack</span>[<a class="autorefs autorefs-internal" title="HTTPXHTTPTransportKeywordArguments (httpx_tenacity.httpx.types.HTTPXHTTPTransportKeywordArguments)" href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments">HTTPXHTTPTransportKeywordArguments</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Additional keyword arguments are used in the construction of an
+<code>httpx.HTTPTransport</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="TenaciousTransport (httpx_tenacity.httpx.tenacious_transport.TenaciousTransport)" href="#httpx_tenacity.httpx.TenaciousTransport">TenaciousTransport</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A default instance of the class created from the given arguments.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.TenaciousTransport.handle_request" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span></code>
+
+<a href="#httpx_tenacity.httpx.TenaciousTransport.handle_request" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Handle a synchronous request with retrying.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="httpx_tenacity.httpx.AsyncTenaciousTransport" class="doc doc-heading">
+            <code>AsyncTenaciousTransport</code>
+
+
+<a href="#httpx_tenacity.httpx.AsyncTenaciousTransport" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="httpx.AsyncBaseTransport">AsyncBaseTransport</span></code></p>
+
+
+
+        <p>Define the asynchronous tenacious (retrying) transport.</p>
+<p>This transport consists of a composed transport for handling requests and an
+appropriately configured tenacity retrying instance.</p>
+<p>The transport owns the composed transport, including one that you pass in
+yourself. Entering, exiting, or closing this transport does the same to the
+composed transport, in the same way that <code>httpx.AsyncClient</code> treats its transport.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.AsyncTenaciousTransport.__aenter__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__aenter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__aenter__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enter the composed transport and return this transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.AsyncTenaciousTransport.__aexit__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__aexit__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Exit the composed transport, passing on any exception details.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.AsyncTenaciousTransport.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">AsyncRetrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncBaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.AsyncTenaciousTransport.aclose" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">aclose</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.aclose" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Close the composed transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.AsyncTenaciousTransport.create" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="p">:</span> <span class="n">RetryPolicy</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncBaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPXHTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncTenaciousTransport</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.create" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance of an asynchronous tenacious (retrying) transport.</p>
+<p>This factory method constructs the instance with an underlying
+<code>httpx.AsyncHTTPTransport</code>.
+That transport is passed any additional keyword arguments.</p>
+<p>The retry policy creates the tenacity retrying instance. The default
+<code>SmartRetryPolicy</code> retries requests when there are server-side issues
+and will either wait the time set in a Retry-After response header or use a
+random exponential backoff.</p>
+<p>The returned transport owns the underlying transport, including one passed in
+as <code>transport</code>, and closes it when it is closed.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>policy</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="RetryPolicy (httpx_tenacity.retry_policy.RetryPolicy)" href="#httpx_tenacity.RetryPolicy">RetryPolicy</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retry policy. Defaults to <code>SmartRetryPolicy()</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>transport</code>
+            </td>
+            <td>
+                  <code><span title="httpx.AsyncBaseTransport">AsyncBaseTransport</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pass an asynchronous transport instance to handle requests
+instead of the default one.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>**kwargs</code>
+            </td>
+            <td>
+                  <code><span title="typing.Unpack">Unpack</span>[<a class="autorefs autorefs-internal" title="HTTPXHTTPTransportKeywordArguments (httpx_tenacity.httpx.types.HTTPXHTTPTransportKeywordArguments)" href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments">HTTPXHTTPTransportKeywordArguments</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Additional keyword arguments are used in the construction of an
+<code>httpx.AsyncHTTPTransport</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="AsyncTenaciousTransport (httpx_tenacity.httpx.async_tenacious_transport.AsyncTenaciousTransport)" href="#httpx_tenacity.httpx.AsyncTenaciousTransport">AsyncTenaciousTransport</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A default instance of the class created from the given arguments.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx.AsyncTenaciousTransport.handle_async_request" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">handle_async_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.AsyncTenaciousTransport.handle_async_request" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Handle an asynchronous request with retrying.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments" class="doc doc-heading">
+            <code>HTTPXHTTPTransportKeywordArguments</code>
+
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
+
+
+
+        <p>Keyword arguments for the sync and async httpx HTTPTransport constructor.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.cert" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">cert</span><span class="p">:</span> <span class="n">CertTypes</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.cert" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http1" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">http1</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http1" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http2" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">http2</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.http2" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.limits" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">limits</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Limits</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.limits" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.local_address" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">local_address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.local_address" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.proxy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">proxy</span><span class="p">:</span> <span class="n">ProxyTypes</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.proxy" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.retries" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">retries</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.retries" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.socket_options" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">socket_options</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">SocketOption</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.socket_options" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.trust_env" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">trust_env</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.trust_env" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.uds" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">uds</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.uds" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.verify" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">verify</span><span class="p">:</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLContext</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx.HTTPXHTTPTransportKeywordArguments.verify" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="httpx2">HTTPX2<a class="headerlink" href="#httpx2" title="Permanent link">&para;</a></h2>
+<p>The following symbols are exposed to the user by <code>httpx_tenacity.httpx2</code>, which
+requires the <code>httpx2</code> extra:</p>
+<ul>
+<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.httpx2.TenaciousTransport"><code>TenaciousTransport</code></a></li>
+<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.httpx2.AsyncTenaciousTransport"><code>AsyncTenaciousTransport</code></a></li>
+<li><a class="autorefs autorefs-internal" href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments"><code>HTTPX2HTTPTransportKeywordArguments</code></a></li>
+</ul>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="httpx_tenacity.httpx2" class="doc doc-heading">
+            <code>httpx_tenacity.httpx2</code>
+
+
+<a href="#httpx_tenacity.httpx2" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Provide the HTTPX2 integration.</p>
+<p>Importing this package requires the <code>httpx2</code> extra, for example
+<code>pip install "httpx-tenacity[httpx2]"</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="httpx_tenacity.httpx2.TenaciousTransport" class="doc doc-heading">
+            <code>TenaciousTransport</code>
+
+
+<a href="#httpx_tenacity.httpx2.TenaciousTransport" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="httpx2.BaseTransport">BaseTransport</span></code></p>
+
+
+
+        <p>Define the synchronous tenacious (retrying) transport.</p>
+<p>This transport consists of a composed transport for handling requests and an
+appropriately configured tenacity retrying instance.</p>
+<p>The transport owns the composed transport, including one that you pass in
+yourself. Entering, exiting, or closing this transport does the same to the
+composed transport, in the same way that <code>httpx2.Client</code> treats its transport.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.TenaciousTransport.__enter__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__enter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
+
+<a href="#httpx_tenacity.httpx2.TenaciousTransport.__enter__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enter the composed transport and return this transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.TenaciousTransport.__exit__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx2.TenaciousTransport.__exit__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Exit the composed transport, passing on any exception details.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.TenaciousTransport.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">Retrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">BaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx2.TenaciousTransport.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.TenaciousTransport.close" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx2.TenaciousTransport.close" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Close the composed transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.TenaciousTransport.create" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="p">:</span> <span class="n">RetryPolicy</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">BaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPX2HTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TenaciousTransport</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.TenaciousTransport.create" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance of a synchronous tenacious (retrying) transport.</p>
+<p>This factory method constructs the instance with an underlying
+<code>httpx2.HTTPTransport</code>.
+That transport is passed any additional keyword arguments.</p>
+<p>The retry policy creates the tenacity retrying instance. The default
+<code>SmartRetryPolicy</code> retries requests when there are server-side issues
+and will either wait the time set in a Retry-After response header or use a
+random exponential backoff.</p>
+<p>The returned transport owns the underlying transport, including one passed in
+as <code>transport</code>, and closes it when it is closed.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>policy</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="RetryPolicy (httpx_tenacity.retry_policy.RetryPolicy)" href="#httpx_tenacity.RetryPolicy">RetryPolicy</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retry policy. Defaults to <code>SmartRetryPolicy()</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>transport</code>
+            </td>
+            <td>
+                  <code><span title="httpx2.BaseTransport">BaseTransport</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pass a transport instance to handle requests instead of the
+default one.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>**kwargs</code>
+            </td>
+            <td>
+                  <code><span title="typing.Unpack">Unpack</span>[<a class="autorefs autorefs-internal" title="HTTPX2HTTPTransportKeywordArguments (httpx_tenacity.httpx2.types.HTTPX2HTTPTransportKeywordArguments)" href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments">HTTPX2HTTPTransportKeywordArguments</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Additional keyword arguments are used in the construction of an
+<code>httpx2.HTTPTransport</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="TenaciousTransport (httpx_tenacity.httpx2.tenacious_transport.TenaciousTransport)" href="#httpx_tenacity.httpx2.TenaciousTransport">TenaciousTransport</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A default instance of the class created from the given arguments.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.TenaciousTransport.handle_request" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">Response</span></code>
+
+<a href="#httpx_tenacity.httpx2.TenaciousTransport.handle_request" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Handle a synchronous request with retrying.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="httpx_tenacity.httpx2.AsyncTenaciousTransport" class="doc doc-heading">
+            <code>AsyncTenaciousTransport</code>
+
+
+<a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="httpx2.AsyncBaseTransport">AsyncBaseTransport</span></code></p>
+
+
+
+        <p>Define the asynchronous tenacious (retrying) transport.</p>
+<p>This transport consists of a composed transport for handling requests and an
+appropriately configured tenacity retrying instance.</p>
+<p>The transport owns the composed transport, including one that you pass in
+yourself. Entering, exiting, or closing this transport does the same to the
+composed transport, in the same way that <code>httpx2.AsyncClient</code> treats its transport.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.AsyncTenaciousTransport.__aenter__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__aenter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__aenter__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enter the composed transport and return this transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.AsyncTenaciousTransport.__aexit__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__aexit__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Exit the composed transport, passing on any exception details.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.AsyncTenaciousTransport.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">AsyncRetrying</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">AsyncBaseTransport</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.AsyncTenaciousTransport.aclose" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">aclose</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.aclose" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Close the composed transport.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.AsyncTenaciousTransport.create" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="p">:</span> <span class="n">RetryPolicy</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">AsyncBaseTransport</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">HTTPX2HTTPTransportKeywordArguments</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncTenaciousTransport</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.create" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance of an asynchronous tenacious (retrying) transport.</p>
+<p>This factory method constructs the instance with an underlying
+<code>httpx2.AsyncHTTPTransport</code>.
+That transport is passed any additional keyword arguments.</p>
+<p>The retry policy creates the tenacity retrying instance. The default
+<code>SmartRetryPolicy</code> retries requests when there are server-side issues
+and will either wait the time set in a Retry-After response header or use a
+random exponential backoff.</p>
+<p>The returned transport owns the underlying transport, including one passed in
+as <code>transport</code>, and closes it when it is closed.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>policy</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="RetryPolicy (httpx_tenacity.retry_policy.RetryPolicy)" href="#httpx_tenacity.RetryPolicy">RetryPolicy</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retry policy. Defaults to <code>SmartRetryPolicy()</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>transport</code>
+            </td>
+            <td>
+                  <code><span title="httpx2.AsyncBaseTransport">AsyncBaseTransport</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pass an asynchronous transport instance to handle requests
+instead of the default one.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>**kwargs</code>
+            </td>
+            <td>
+                  <code><span title="typing.Unpack">Unpack</span>[<a class="autorefs autorefs-internal" title="HTTPX2HTTPTransportKeywordArguments (httpx_tenacity.httpx2.types.HTTPX2HTTPTransportKeywordArguments)" href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments">HTTPX2HTTPTransportKeywordArguments</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Additional keyword arguments are used in the construction of an
+<code>httpx2.AsyncHTTPTransport</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="AsyncTenaciousTransport (httpx_tenacity.httpx2.async_tenacious_transport.AsyncTenaciousTransport)" href="#httpx_tenacity.httpx2.AsyncTenaciousTransport">AsyncTenaciousTransport</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A default instance of the class created from the given arguments.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="httpx_tenacity.httpx2.AsyncTenaciousTransport.handle_async_request" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">handle_async_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">Response</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.AsyncTenaciousTransport.handle_async_request" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Handle an asynchronous request with retrying.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments" class="doc doc-heading">
+            <code>HTTPX2HTTPTransportKeywordArguments</code>
+
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
+
+
+
+        <p>Keyword arguments for the sync and async httpx2 HTTPTransport constructor.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.cert" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">cert</span><span class="p">:</span> <span class="n">CertTypes</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.cert" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http1" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">http1</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http1" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http2" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">http2</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.http2" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.limits" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">limits</span><span class="p">:</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">Limits</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.limits" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.local_address" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">local_address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.local_address" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.proxy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">proxy</span><span class="p">:</span> <span class="n">ProxyTypes</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.proxy" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.retries" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">retries</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.retries" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.socket_options" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">socket_options</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">SocketOption</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.socket_options" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.trust_env" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">trust_env</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.trust_env" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.uds" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">uds</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.uds" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.verify" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">verify</span><span class="p">:</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLContext</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#httpx_tenacity.httpx2.HTTPX2HTTPTransportKeywordArguments.verify" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
 </div>
 
 
@@ -2533,7 +5131,7 @@ as <code>httpx.RequestError</code>.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "navigation.indexes", "navigation.instant", "navigation.tracking", "navigation.top"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

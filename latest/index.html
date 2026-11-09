@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A lightweight package that provides tenacious (retrying) httpx transports.">
+        <meta name="description" content="A lightweight package that provides tenacious (retrying) httpx and httpx2 transports.">
       
       
         <meta name="author" content="Moritz E. Beber">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -334,6 +334,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migrating-from-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating from &lt;0.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -420,6 +437,8 @@
       
         
           
+        
+      
         
       
         
@@ -561,6 +580,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="adr/adr004-provide-one-integration-per-http-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR004 - Provide one integration per HTTP client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -603,6 +650,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migrating-from-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating from &lt;0.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -637,11 +701,64 @@
 
 
 <h1 id="httpx-tenacity">HTTPX Tenacity<a class="headerlink" href="#httpx-tenacity" title="Permanent link">&para;</a></h1>
-<p>A lightweight package that provides tenacious (retrying) httpx transports.</p>
+<p>A lightweight package that provides tenacious (retrying) httpx and httpx2 transports.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<p>The package is published on <a href="https://pypi.org/project/httpx-tenacity/">PyPI</a>. Install it,
-for example, with pip.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>httpx-tenacity
+<p>The package is published on <a href="https://pypi.org/project/httpx-tenacity/">PyPI</a>. Plain
+<code>pip install httpx-tenacity</code> installs only the shared core with the retry policies,
+which contains no HTTP client. Select the HTTP client you use with an extra, <code>httpx</code> or
+<code>httpx2</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'httpx-tenacity[httpx]'</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'httpx-tenacity[httpx2]'</span>
+</code></pre></div>
+<p>To use both HTTP clients in the same process, install both extras.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'httpx-tenacity[httpx,httpx2]'</span>
+</code></pre></div>
+<p>There is no automatic fallback: you choose the integration explicitly by importing from
+<code>httpx_tenacity.httpx</code> or from <code>httpx_tenacity.httpx2</code>. The retry policies, such as
+<a class="autorefs autorefs-internal" href="api/#httpx_tenacity.SmartRetryPolicy"><code>SmartRetryPolicy</code></a>, are independent of the HTTP
+client and work with the transports of both integrations.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">HTTPX</label><label for="__tabbed_1_2">HTTPX2</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmartRetryPolicy</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity.httpx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenaciousTransport</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="n">SmartRetryPolicy</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://api.example.com/data"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmartRetryPolicy</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">httpx_tenacity.httpx2</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenaciousTransport</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">transport</span> <span class="o">=</span> <span class="n">TenaciousTransport</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="n">SmartRetryPolicy</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">client</span> <span class="o">=</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://api.example.com/data"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>The <a href="tutorial/">tutorial</a> shows more examples, including the asynchronous
+transports.</p>
+<h3 id="migrating-from-03">Migrating from &lt;0.3<a class="headerlink" href="#migrating-from-03" title="Permanent link">&para;</a></h3>
+<p>The transports moved out of the package root and <code>httpx</code> is no longer a required
+dependency. Install <code>httpx-tenacity[httpx]</code> instead of <code>httpx-tenacity</code> and change your
+imports. <code>RetryPolicy</code>, <code>SmartRetryPolicy</code>, and <code>RetryingT</code> keep their import paths.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gd">-from httpx_tenacity import TenaciousTransport</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="gi">+from httpx_tenacity.httpx import TenaciousTransport</span>
+</code></pre></div>
+<p>The same applies to <code>AsyncTenaciousTransport</code> and
+<code>HTTPXHTTPTransportKeywordArguments</code>. For HTTPX2, import them from
+<code>httpx_tenacity.httpx2</code> instead.</p>
+<p>Additionally, <code>create()</code> takes a <code>policy</code> instead of the <code>max_attempts</code>, <code>multiplier</code>,
+<code>max_wait_seconds</code>, <code>min_wait_seconds</code>, and <code>exponent_base</code> arguments.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gd">-transport = TenaciousTransport.create(max_attempts=3)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="gi">+transport = TenaciousTransport.create(policy=SmartRetryPolicy(max_attempts=3))</span>
 </code></pre></div>
 <h2 id="copyright">Copyright<a class="headerlink" href="#copyright" title="Permanent link">&para;</a></h2>
 <ul>
@@ -724,7 +841,7 @@ for example, with pip.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["content.code.annotate", "navigation.indexes", "navigation.instant", "navigation.tracking", "navigation.top"], "search": "assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
