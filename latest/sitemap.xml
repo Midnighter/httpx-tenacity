@@ -2,34 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/api/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/tutorial/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/adr/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/adr/adr001-adopt-tenacity-for-retrying/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/adr/adr002-use-composition-over-inheritance/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/adr/adr003-configure-retries-with-a-retry-policy-protocol/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://midnighter.github.io/httpx-tenacity/latest/adr/adr004-provide-one-integration-per-http-client/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
 </urlset>
