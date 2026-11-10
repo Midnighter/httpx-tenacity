@@ -98,6 +98,14 @@ update`](https://hatch.pypa.io/dev/cli/reference/#hatch-self-update) or whatever
     hatch run test:run
     ```
 
+    If you change a GitHub workflow, also audit it with
+    [zizmor](https://docs.zizmor.sh/). The version is pinned in `pyproject.toml`, so
+    you run the same one as CI.
+
+    ```shell
+    hatch run workflows:check
+    ```
+
 6. Commit your changes and push your branch to GitHub. Please use [semantic
    commit messages](https://www.conventionalcommits.org/).
 
