@@ -57,6 +57,8 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - Docs: `hatch run docs:build` (strict).
 - Distribution: `hatch run distribution:check` (builds the package, runs `twine check`,
   and checks the wheel metadata so that neither HTTP client is a required dependency).
+- Workflows: `hatch run workflows:check` (zizmor, pinned in `pyproject.toml`). CI runs
+  it only on pull requests to `main` that change `.github/workflows/`.
 - The type, docs and test environments install both extras, so they cover both clients.
 - Do not commit changes hatch-pip-compile makes to `requirements/*.txt` unless
   updating dependencies is the task.
