@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/api/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/tutorial/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/adr/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/adr/adr001-adopt-tenacity-for-retrying/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/adr/adr002-use-composition-over-inheritance/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/adr/adr003-configure-retries-with-a-retry-policy-protocol/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc1/adr/adr004-provide-one-integration-per-http-client/</loc>
+         <lastmod>2026-11-12</lastmod>
+    </url>
+</urlset>
