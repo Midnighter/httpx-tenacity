@@ -28,7 +28,8 @@ dependency; each HTTP client is an optional extra (`httpx-tenacity[httpx]`,
 - `tests/distribution`: `check_wheel_metadata.py`, run by `distribution:check`.
 - `tests/documentation`: runs every Python block in `README.md` and `docs/**/*.md`.
 - `tests/pyodide`: Pyodide compatibility, run by the Pyodide workflows in CI.
-- `docs/`: mkdocs-material site with tutorial, API reference and ADRs in `docs/adr/`
+- `docs/`: Zensical site (configured in `zensical.toml`, navigation in `.nav.yml` files)
+  with tutorial, API reference and ADRs in `docs/adr/`
   (ADR001-ADR004: retrying via tenacity; composition over inheritance; the retry policy
   protocol; one integration per HTTP client). Record significant design decisions as a
   new ADR with the `adr` skill and link it in `docs/adr/index.md`.
