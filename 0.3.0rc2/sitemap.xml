@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/</loc>
+      </url>
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/adr/</loc>
+      </url>
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/adr/adr001-adopt-tenacity-for-retrying/</loc>
+      </url>
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/adr/adr002-use-composition-over-inheritance/</loc>
+      </url>
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/adr/adr003-configure-retries-with-a-retry-policy-protocol/</loc>
+      </url>
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/adr/adr004-provide-one-integration-per-http-client/</loc>
+      </url>
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/api/</loc>
+      </url>
+      <url>
+        <loc>https://midnighter.github.io/httpx-tenacity/0.3.0rc2/tutorial/</loc>
+      </url>
+</urlset>
