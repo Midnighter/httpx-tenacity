@@ -106,6 +106,17 @@ update`](https://hatch.pypa.io/dev/cli/reference/#hatch-self-update) or whatever
     hatch run workflows:check
     ```
 
+    We measure code health with [CodeScene](https://codescene.com/). Its GitHub
+    App reviews every pull request, so you do not need it yourself. For feedback
+    before you push, install the [CodeScene CLI](https://codescene.io/docs/cli),
+    sign in with `cs auth login`, and check your branch. The `codescene-delta`
+    hook in `.pre-commit-config.yaml` runs the same check on staged changes
+    whenever `cs` is installed.
+
+    ```shell
+    cs delta main
+    ```
+
 6. Commit your changes and push your branch to GitHub. Please use [semantic
    commit messages](https://www.conventionalcommits.org/).
 
