@@ -44,6 +44,10 @@ if [[ "$locks_clean" == true ]]; then
   git checkout --quiet -- requirements/
 fi
 
+# The CodeScene CLI for code health checks. It needs no token to install; the
+# CS_ACCESS_TOKEN Amp secret activates it at run time.
+step .codescene/install-cli.sh
+
 # Replace the notes on every run so a stale snapshot picks up edits.
 guidance="$HOME/.config/amp/AGENTS.md"
 mkdir -p "$(dirname "$guidance")"
@@ -62,5 +66,9 @@ cat >> "$guidance" <<'EOF'
   other Python versions on demand when an environment needs them.
 - hatch-pip-compile may rewrite headers in `requirements/*.txt` when running hatch.
   Do not commit those changes unless updating dependencies is part of the task.
+- The CodeScene CLI `cs` is installed, pinned by `.codescene/install-cli.sh`. When
+  the `CS_ACCESS_TOKEN` secret is set, use `cs review <file>` for a file's code
+  health score and findings, and `cs delta origin/main` for the branch's impact
+  before pushing.
 <!-- end httpx-tenacity orb notes -->
 EOF
