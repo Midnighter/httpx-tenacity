@@ -63,6 +63,11 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - The type, docs and test environments install both extras, so they cover both clients.
 - Do not commit changes hatch-pip-compile makes to `requirements/*.txt` unless
   updating dependencies is the task.
+- Code health: CodeScene's GitHub App reviews pull requests, so CI runs no CodeScene
+  job. When the `cs` CLI is installed and signed in (`cs auth login` or
+  `CS_ACCESS_TOKEN`), run `cs review <file>` for a file's score and findings and
+  `cs delta origin/main` for the branch's impact. Custom code health rules, if any, go
+  in `.codescene/code-health-rules.json`.
 
 ## Design rules
 
