@@ -127,3 +127,6 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - Use Conventional Commit messages (`fix: ...`, `feat: ...`, `docs: ...`).
 - Versions come from git tags via hatch-vcs. Pushing a tag like `1.2.3` triggers the
   release workflow, so do not create or push tags unless asked.
+- A release tag must point to a commit on `main`. The release workflow's
+  `check-tag` job refuses any other commit, and its `attest` job records build
+  provenance for the distributions before they are published.
