@@ -325,6 +325,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#verifying-a-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Verifying a release
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -637,6 +648,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#verifying-a-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Verifying a release
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -733,6 +755,18 @@ imports. <code>RetryPolicy</code>, <code>SmartRetryPolicy</code>, and <code>Retr
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gd">-transport = TenaciousTransport.create(max_attempts=3)</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="gi">+transport = TenaciousTransport.create(policy=SmartRetryPolicy(max_attempts=3))</span>
 </code></pre></div>
+<h3 id="verifying-a-release">Verifying a release<a class="headerlink" href="#verifying-a-release" title="Permanent link">&para;</a></h3>
+<p>Each release attests that its wheel and source distribution were built by this
+repository's release workflow from a commit on <code>main</code>. Download a distribution from
+PyPI and check it with the <a href="https://cli.github.com/">GitHub CLI</a>, with <code>VERSION</code> set to
+the release you want to check:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip<span class="w"> </span>download<span class="w"> </span>--no-deps<span class="w"> </span>--only-binary<span class="w"> </span>:all:<span class="w"> </span><span class="s2">"httpx-tenacity==</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">"</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>gh<span class="w"> </span>attestation<span class="w"> </span>verify<span class="w"> </span><span class="s2">"httpx_tenacity-</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">-py3-none-any.whl"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>--repo<span class="w"> </span>Midnighter/httpx-tenacity<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span>--signer-workflow<span class="w"> </span>Midnighter/httpx-tenacity/.github/workflows/release.yml
+</code></pre></div>
+<p>The command exits with status 0 when the file verifies. Add <code>--format json</code> to see the
+tag and commit it was built from. Releases up to 0.3.0 have no such attestation.</p>
 <h2 id="copyright">Copyright<a class="headerlink" href="#copyright" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Copyright © 2026 Moritz E. Beber.</li>
