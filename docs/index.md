@@ -77,6 +77,23 @@ Additionally, `create()` takes a `policy` instead of the `max_attempts`, `multip
 +transport = TenaciousTransport.create(policy=SmartRetryPolicy(max_attempts=3))
 ```
 
+### Verifying a release
+
+Each release attests that its wheel and source distribution were built by this
+repository's release workflow from a commit on `main`. Download a distribution from
+PyPI and check it with the [GitHub CLI](https://cli.github.com/), with `VERSION` set to
+the release you want to check:
+
+```sh
+pip download --no-deps --only-binary :all: "httpx-tenacity==${VERSION}"
+gh attestation verify "httpx_tenacity-${VERSION}-py3-none-any.whl" \
+  --repo Midnighter/httpx-tenacity \
+  --signer-workflow Midnighter/httpx-tenacity/.github/workflows/release.yml
+```
+
+The command exits with status 0 when the file verifies. Add `--format json` to see the
+tag and commit it was built from. Releases up to 0.3.0 have no such attestation.
+
 ## Copyright
 
 -   Copyright © 2026 Moritz E. Beber.
