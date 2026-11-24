@@ -63,6 +63,19 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - The type, docs and test environments install both extras, so they cover both clients.
 - Do not commit changes hatch-pip-compile makes to `requirements/*.txt` unless
   updating dependencies is the task.
+- Python 3.15 is set once in `[tool.hatch.envs.default]` and the test matrices override
+  it; do not add `python = ...` to individual environments.
+- Regenerating locks: `hatch env create` does nothing for an existing environment, so
+  run `hatch env prune` first. `dev` is the `pip-compile-constraint` of every other
+  environment, so changing it rewrites the headers of all lock files.
+  `hatch-pip-compile --all` leaves an untracked `requirements/requirements-default.txt`;
+  delete it.
+- Pre-commit (`.pre-commit-config.yaml`): hooks that need the project's tools are local
+  hooks that call `hatch run`, so they use the locked versions. Do not add
+  `default_language_version`; pre-commit cannot download Python 3.15.
+- `.amp/plugins/pre-commit-checks.ts` runs the full check suite before every agent
+  `git commit`. Keep it a plain allow/reject check; do not make it rewrite the commit
+  command or install git hooks.
 - Code health: CodeScene's GitHub App reviews pull requests, so CI runs no CodeScene
   job. When the `cs` CLI is installed and signed in (`cs auth login` or
   `CS_ACCESS_TOKEN`), run `cs review <file>` for a file's score and findings and
@@ -119,14 +132,45 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - `docs/index.md` and `docs/tutorial.md` show each example in `=== "HTTPX"` and
   `=== "HTTPX2"` tabs. `README.md` has an HTTPX example only and describes HTTPX2 in
   prose, because GitHub does not render tabs.
+- Zensical silently ignores MkDocs plugins it does not support, even with `--strict`
+  ("No issues found"). Check its supported plugins before adding one; navigation lives
+  in `docs/.nav.yml` and `docs/adr/.nav.yml`.
+
+## CI workflows
+
+- CI runs only on pushes to `main` and on pull requests. A pull request never runs
+  `docs.yml` or `release.yml`.
+- Pin actions by full commit SHA with a `# vX.Y.Z` comment. Each workflow starts with
+  `permissions: {}` and each job grants only what it needs.
+- The hatch version appears in 8 places in `test.yml`, `docs.yml`, `release.yml` and
+  `zizmor.yml`; bump them together.
+- The unit-tests job installs hatch with `pip install hatch==X hatch-pip-compile`
+  instead of the `pypa/hatch` action, which breaks `distribution:check` on macOS and
+  Windows. Keep `hatch-pip-compile` on that line: without it hatch 1.18 fails on macOS
+  with "unknown type: pip-compile".
+- Docker-based actions, such as the PyPI publish, need `ubuntu-latest`, not
+  `ubuntu-slim`. Jobs that call a reusable workflow cannot set `timeout-minutes`.
+- Packages that pin each other exactly (`httpx2`/`httpcore2`, `zensical`/`zensical-ui`)
+  need a `groups:` entry in `.github/dependabot.yml`, or their single updates fail.
 
 ## Changes and releases
 
 - Add a user-facing entry under `## [Unreleased]` in `CHANGELOG.md` for every change in
-  behavior, API or supported Python versions.
+  behavior, API or supported Python versions. CI, tooling and docs-tooling changes get
+  no entry.
 - Use Conventional Commit messages (`fix: ...`, `feat: ...`, `docs: ...`).
 - Versions come from git tags via hatch-vcs. Pushing a tag like `1.2.3` triggers the
   release workflow, so do not create or push tags unless asked.
 - A release tag must point to a commit on `main`. The release workflow's
   `check-tag` job refuses any other commit, and its `attest` job records build
   provenance for the distributions before they are published.
+- Tags are lightweight and follow PEP 440 without a `v` (`0.4.0`, `0.4.0rc1`). A release
+  commit, `docs: prepare release vX.Y.Z`, moves `[Unreleased]` under
+  `## [X.Y.Z] - YYYY-MM-DD`; release candidates get no changelog heading.
+
+## Scratch work
+
+- The system `python3` has no PyYAML; validate YAML with `uvx pre-commit
+  validate-config .pre-commit-config.yaml` or `npx -y js-yaml <file>`.
+- `uv run` in the repository root leaves a `uv.lock` that is not ignored; run it
+  elsewhere or delete it. Ruff ignores files under `.amp/`.
