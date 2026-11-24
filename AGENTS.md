@@ -59,7 +59,12 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - Distribution: `hatch run distribution:check` (builds the package, runs `twine check`,
   and checks the wheel metadata so that neither HTTP client is a required dependency).
 - Workflows: `hatch run workflows:check` (zizmor, pinned in `pyproject.toml`). CI runs
-  it only on pull requests to `main` that change `.github/workflows/`.
+  it only on pull requests to `main` that change `.github/workflows/`. Without a token
+  zizmor skips its online audits, which CI runs, so check workflow changes with
+  `GH_TOKEN=$(gh auth token) hatch run workflows:check`. Any finding fails CI; ask
+  before suppressing one with `# zizmor: ignore[...]`.
+- `hatch run style:format` also reformats Python blocks in `README.md` and `docs/`.
+  Check `git diff --stat` afterwards and revert changes outside your task.
 - The type, docs and test environments install both extras, so they cover both clients.
 - Do not commit changes hatch-pip-compile makes to `requirements/*.txt` unless
   updating dependencies is the task.
@@ -148,6 +153,9 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
   instead of the `pypa/hatch` action, which breaks `distribution:check` on macOS and
   Windows. Keep `hatch-pip-compile` on that line: without it hatch 1.18 fails on macOS
   with "unknown type: pip-compile".
+- A calling workflow must grant every permission its reusable workflows request;
+  otherwise the run ends in `startup_failure`. Tag filters are globs, not regular
+  expressions.
 - Docker-based actions, such as the PyPI publish, need `ubuntu-latest`, not
   `ubuntu-slim`. Jobs that call a reusable workflow cannot set `timeout-minutes`.
 - Packages that pin each other exactly (`httpx2`/`httpcore2`, `zensical`/`zensical-ui`)
@@ -158,19 +166,38 @@ Everything runs through hatch (environments are pip-compile locked in `requireme
 - Add a user-facing entry under `## [Unreleased]` in `CHANGELOG.md` for every change in
   behavior, API or supported Python versions. CI, tooling and docs-tooling changes get
   no entry.
-- Use Conventional Commit messages (`fix: ...`, `feat: ...`, `docs: ...`).
+- Use Conventional Commit messages (`fix: ...`, `feat: ...`, `docs: ...`) and name
+  branches after the commit type, such as `fix/...`, `feat/...`, `ci/...`, or
+  `chore/...`.
+- Get approval for each remote step separately: approval to commit does not cover
+  pushing, and approval to push does not cover tagging. Push directly to `main` only
+  when asked; the branch rules let such a push skip the required checks. The
+  maintainer merges pull requests himself with rebase or squash merges, so merged
+  commits get new SHAs.
+- Pull request bodies follow `.github/PULL_REQUEST_TEMPLATE.md`; fill in its
+  `fix #N` line for the issue a pull request resolves, so that GitHub closes it.
+- httpx-limiter (`midnighter/httpx-limiter`) shares this repository's template, so
+  tooling changes are often ported between them; `git format-patch` with
+  `git apply --check` usually applies cleanly. Port each upstream commit as its own
+  commit with the same message, changing only the `Amp-Thread-ID` trailer.
 - Versions come from git tags via hatch-vcs. Pushing a tag like `1.2.3` triggers the
   release workflow, so do not create or push tags unless asked.
 - A release tag must point to a commit on `main`. The release workflow's
   `check-tag` job refuses any other commit, and its `attest` job records build
   provenance for the distributions before they are published.
-- Tags are lightweight and follow PEP 440 without a `v` (`0.4.0`, `0.4.0rc1`). A release
-  commit, `docs: prepare release vX.Y.Z`, moves `[Unreleased]` under
-  `## [X.Y.Z] - YYYY-MM-DD`; release candidates get no changelog heading.
+- Tags are lightweight and follow PEP 440 without a `v` (`0.4.0`, `0.4.0rc1`).
+  Pre-release tags publish GitHub pre-releases. A release commit,
+  `docs: prepare release vX.Y.Z`, moves `[Unreleased]` under
+  `## [X.Y.Z] - YYYY-MM-DD`; release candidates get no changelog heading. Tag the
+  release commit only after its CI passes on `main`.
 
 ## Scratch work
 
 - The system `python3` has no PyYAML; validate YAML with `uvx pre-commit
   validate-config .pre-commit-config.yaml` or `npx -y js-yaml <file>`.
-- `uv run` in the repository root leaves a `uv.lock` that is not ignored; run it
-  elsewhere or delete it. Ruff ignores files under `.amp/`.
+- Run one-off tools in the repository with `uv run --no-project --with <pkg>`;
+  without `--no-project`, uv leaves a stray `uv.lock` that is not ignored. Ruff
+  ignores files under `.amp/`.
+- pre-commit is not installed: use `uvx pre-commit`. It refuses to run while
+  `.pre-commit-config.yaml` has unstaged changes.
+- The Pyodide tests load the wheel from `dist/`, so run `pyodide build` before them.

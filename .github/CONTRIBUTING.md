@@ -91,11 +91,12 @@ update`](https://hatch.pypa.io/dev/cli/reference/#hatch-self-update) or whatever
 
 4. Create a branch for local development using the default branch (typically `main`)
    as a starting
-   point. Use `fix` or `feat` as a prefix for your branch name.
+   point. Prefix your branch name with the type of your commits, such as `fix/`,
+   `feat/`, `ci/`, or `chore/`.
 
     ```shell
     git checkout main
-    git checkout -b fix-name-of-your-bugfix
+    git checkout -b fix/name-of-your-bugfix
     ```
 
     Now you can make your changes locally.
@@ -132,7 +133,7 @@ update`](https://hatch.pypa.io/dev/cli/reference/#hatch-self-update) or whatever
     ```shell
     git add .
     git commit -m "fix: summarize your changes"
-    git push -u origin fix-name-of-your-bugfix
+    git push -u origin fix/name-of-your-bugfix
     ```
 
 7. Open the link displayed in the message when pushing your new branch in order
